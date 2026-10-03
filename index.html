@@ -1,1 +1,1869 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><title>LEVEL 20 — Samkit</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="styles.css"></head><body><div id="app"></div><script src="app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>LEVEL 20 — SAMKIT</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap');
+
+:root{
+  --bg:#070707;
+  --fg:#f4f0e9;
+  --muted:#85817b;
+  --line:rgba(255,255,255,.11);
+  --panel:rgba(255,255,255,.045);
+  --accent:#d7ff45;
+  --accent2:#fff;
+  --danger:#ff5e5e;
+  --serif:"Playfair Display",serif;
+  --mono:"DM Mono",monospace;
+  --sans:"Inter",sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--sans);
+  overflow-x:hidden;
+}
+button{font:inherit;color:inherit}
+button:focus{outline:none}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:999;
+  opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+.hidden{display:none!important}
+
+/* INTRO */
+
+#intro{
+  min-height:100vh;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#030303;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.intro-glow{
+  position:absolute;
+  width:55vw;
+  height:55vw;
+  max-width:700px;
+  max-height:700px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(215,255,69,.09),transparent 65%);
+  animation:breathe 5s ease-in-out infinite;
+}
+
+@keyframes breathe{
+  0%,100%{transform:scale(.9);opacity:.5}
+  50%{transform:scale(1.12);opacity:1}
+}
+
+.intro-content{
+  position:relative;
+  text-align:center;
+  z-index:2;
+  padding:25px;
+}
+
+.kicker{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.35em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:25px;
+}
+
+.twenty{
+  font-size:clamp(150px,32vw,430px);
+  line-height:.68;
+  font-weight:800;
+  letter-spacing:-.09em;
+  background:linear-gradient(180deg,#fff,#555);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:numberIn 1.8s cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes numberIn{
+  from{transform:scale(1.3);opacity:0;filter:blur(20px)}
+  to{transform:scale(1);opacity:1;filter:blur(0)}
+}
+
+.intro-title{
+  margin-top:45px;
+  font-size:clamp(18px,3vw,34px);
+  letter-spacing:.38em;
+  font-weight:500;
+}
+
+.intro-sub{
+  margin-top:14px;
+  font-family:var(--mono);
+  color:#666;
+  font-size:10px;
+  letter-spacing:.2em;
+}
+
+.enter-btn{
+  margin-top:55px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.035);
+  padding:17px 32px;
+  cursor:pointer;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  font-size:10px;
+  transition:.35s;
+}
+
+.enter-btn:hover{
+  background:#fff;
+  color:#000;
+  transform:translateY(-3px);
+}
+
+.enter-btn span{margin-left:18px}
+
+/* BRIEFING */
+
+#briefing{
+  min-height:100vh;
+  position:fixed;
+  inset:0;
+  z-index:90;
+  background:#090909;
+  display:none;
+  overflow-y:auto;
+}
+
+.brief-wrap{
+  width:min(900px,90%);
+  margin:auto;
+  padding:80px 0;
+}
+
+.brief-index{
+  font-family:var(--mono);
+  color:var(--accent);
+  font-size:10px;
+  letter-spacing:.2em;
+}
+
+.brief-title{
+  font-size:clamp(48px,9vw,105px);
+  line-height:.9;
+  margin:35px 0 65px;
+  letter-spacing:-.06em;
+}
+
+.brief-title em{
+  font-family:var(--serif);
+  font-weight:500;
+}
+
+.brief-copy{
+  max-width:650px;
+  color:#aaa;
+  line-height:1.9;
+  font-size:15px;
+}
+
+.rules{
+  margin-top:65px;
+  border-top:1px solid var(--line);
+}
+
+.rule{
+  display:grid;
+  grid-template-columns:70px 1fr;
+  gap:25px;
+  padding:25px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.rule-num{
+  font-family:var(--mono);
+  color:#555;
+  font-size:11px;
+}
+
+.rule strong{
+  display:block;
+  margin-bottom:7px;
+  font-weight:500;
+}
+
+.rule p{
+  color:#777;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.start-year{
+  margin-top:60px;
+  padding:18px 28px;
+  background:#fff;
+  color:#000;
+  border:0;
+  cursor:pointer;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  font-size:10px;
+}
+
+/* APP */
+
+#app{display:none;min-height:100vh}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:30;
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5vw;
+  background:rgba(7,7,7,.78);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+}
+
+.brand{
+  font-size:11px;
+  letter-spacing:.22em;
+}
+
+.brand span{
+  color:var(--muted);
+  margin-left:10px;
+}
+
+.top-right{
+  display:flex;
+  align-items:center;
+  gap:22px;
+}
+
+.xp-mini{
+  font-family:var(--mono);
+  font-size:10px;
+  color:#aaa;
+}
+
+.progress-mini{
+  width:100px;
+  height:2px;
+  background:#222;
+}
+
+.progress-mini i{
+  display:block;
+  width:0%;
+  height:100%;
+  background:var(--accent);
+  transition:1s;
+}
+
+.menu-btn{
+  border:0;
+  background:none;
+  cursor:pointer;
+  font-family:var(--mono);
+  font-size:10px;
+  color:#888;
+}
+
+/* MONTH NAV */
+
+.month-nav{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:15px 5vw;
+  border-bottom:1px solid var(--line);
+  scrollbar-width:none;
+}
+
+.month-nav::-webkit-scrollbar{display:none}
+
+.month-pill{
+  flex:0 0 auto;
+  border:1px solid transparent;
+  background:transparent;
+  color:#555;
+  padding:9px 13px;
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.12em;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.month-pill:hover{color:#aaa}
+
+.month-pill.active{
+  border-color:var(--line);
+  color:#fff;
+  background:rgba(255,255,255,.05);
+}
+
+.month-pill.complete{
+  color:var(--accent);
+}
+
+/* HERO */
+
+.world{
+  min-height:calc(100vh - 120px);
+  position:relative;
+  overflow:hidden;
+}
+
+.world-bg{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.world-bg:before{
+  content:"";
+  position:absolute;
+  width:70vw;
+  height:70vw;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--worldGlow,rgba(215,255,69,.08)),transparent 65%);
+  top:-30%;
+  right:-20%;
+}
+
+.world-bg:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,transparent 49.9%,rgba(255,255,255,.025) 50%,transparent 50.1%),
+    linear-gradient(0deg,transparent 49.9%,rgba(255,255,255,.025) 50%,transparent 50.1%);
+  background-size:120px 120px;
+  opacity:.25;
+}
+
+.world-inner{
+  width:min(1250px,90%);
+  margin:auto;
+  padding:85px 0 120px;
+  position:relative;
+  z-index:2;
+}
+
+.world-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:var(--mono);
+  font-size:9px;
+  color:#686868;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+
+.world-num{color:var(--accent)}
+
+.world-title{
+  margin-top:60px;
+  font-size:clamp(60px,12vw,170px);
+  line-height:.78;
+  letter-spacing:-.075em;
+  font-weight:700;
+  max-width:1000px;
+}
+
+.world-title em{
+  font-family:var(--serif);
+  font-weight:500;
+}
+
+.world-description{
+  max-width:600px;
+  margin-top:40px;
+  color:#858585;
+  font-size:14px;
+  line-height:1.8;
+}
+
+.world-stats{
+  display:flex;
+  gap:45px;
+  margin-top:45px;
+}
+
+.stat-label{
+  font-family:var(--mono);
+  font-size:8px;
+  color:#555;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+
+.stat-value{
+  margin-top:8px;
+  font-size:23px;
+}
+
+/* MISSION AREA */
+
+.section-label{
+  margin-top:110px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  padding-bottom:15px;
+}
+
+.section-label span:first-child{
+  font-family:var(--mono);
+  color:#777;
+  font-size:9px;
+  letter-spacing:.2em;
+}
+
+.section-label span:last-child{
+  font-family:var(--mono);
+  color:#444;
+  font-size:9px;
+}
+
+.missions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;
+  background:var(--line);
+  margin-top:1px;
+}
+
+.mission{
+  min-height:310px;
+  padding:35px;
+  background:rgba(7,7,7,.95);
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.4s;
+}
+
+.mission:hover{
+  background:rgba(255,255,255,.055);
+}
+
+.mission:after{
+  content:"";
+  position:absolute;
+  inset:auto -30% -70% auto;
+  width:250px;
+  height:250px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--worldGlow),transparent 70%);
+  opacity:.18;
+  transition:.5s;
+}
+
+.mission:hover:after{transform:scale(1.5)}
+
+.mission.completed{
+  opacity:.72;
+}
+
+.mission.completed .mission-status{
+  color:var(--accent);
+}
+
+.mission.locked{
+  opacity:.32;
+  cursor:not-allowed;
+}
+
+.mission-number{
+  font-family:var(--mono);
+  color:#555;
+  font-size:9px;
+}
+
+.mission-status{
+  position:absolute;
+  right:30px;
+  top:30px;
+  font-family:var(--mono);
+  color:#444;
+  font-size:9px;
+}
+
+.mission h3{
+  margin-top:65px;
+  font-size:25px;
+  font-weight:500;
+  letter-spacing:-.03em;
+}
+
+.mission p{
+  margin-top:13px;
+  color:#777;
+  font-size:12px;
+  line-height:1.7;
+  max-width:390px;
+}
+
+.mission-bottom{
+  position:absolute;
+  bottom:30px;
+  left:35px;
+  right:35px;
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+}
+
+.type{
+  font-family:var(--mono);
+  font-size:8px;
+  color:#444;
+  text-transform:uppercase;
+}
+
+.reward{
+  font-family:var(--mono);
+  font-size:10px;
+  color:#888;
+}
+
+/* EXTRA */
+
+.extra-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--line);
+  margin-top:1px;
+}
+
+.extra{
+  min-height:180px;
+  background:#080808;
+  padding:25px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.extra:hover{background:#111}
+
+.extra small{
+  font-family:var(--mono);
+  color:#555;
+  font-size:8px;
+}
+
+.extra h4{
+  margin-top:35px;
+  font-size:17px;
+  font-weight:500;
+}
+
+.extra p{
+  margin-top:9px;
+  color:#666;
+  font-size:11px;
+  line-height:1.6;
+}
+
+/* DISCOVERY */
+
+.discovery{
+  margin-top:90px;
+  padding:45px;
+  border:1px solid rgba(215,255,69,.18);
+  background:rgba(215,255,69,.025);
+  position:relative;
+  overflow:hidden;
+}
+
+.discovery:before{
+  content:"";
+  position:absolute;
+  width:350px;
+  height:350px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(215,255,69,.1),transparent 70%);
+  right:-150px;
+  top:-150px;
+}
+
+.discovery-tag{
+  font-family:var(--mono);
+  color:var(--accent);
+  font-size:8px;
+  letter-spacing:.25em;
+}
+
+.discovery h3{
+  margin-top:18px;
+  font-family:var(--serif);
+  font-size:36px;
+  font-weight:500;
+}
+
+.discovery p{
+  margin-top:12px;
+  max-width:600px;
+  color:#777;
+  line-height:1.8;
+  font-size:12px;
+}
+
+/* ACHIEVEMENT */
+
+.achievement{
+  margin-top:45px;
+  display:flex;
+  align-items:center;
+  gap:25px;
+  padding:28px;
+  border:1px solid var(--line);
+}
+
+.achievement-icon{
+  width:50px;
+  height:50px;
+  border:1px solid #333;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--mono);
+  font-size:11px;
+}
+
+.achievement small{
+  font-family:var(--mono);
+  color:#555;
+  font-size:8px;
+}
+
+.achievement strong{
+  display:block;
+  margin-top:6px;
+  font-size:15px;
+}
+
+/* MODAL */
+
+#modal{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(18px);
+}
+
+.modal-box{
+  width:min(600px,100%);
+  border:1px solid var(--line);
+  background:#0c0c0c;
+  padding:40px;
+  position:relative;
+  animation:modalIn .4s cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(30px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+
+.modal-close{
+  position:absolute;
+  right:22px;
+  top:20px;
+  border:0;
+  background:none;
+  color:#555;
+  cursor:pointer;
+}
+
+.modal-num{
+  font-family:var(--mono);
+  color:var(--accent);
+  font-size:9px;
+  letter-spacing:.2em;
+}
+
+.modal-box h2{
+  margin-top:25px;
+  font-size:35px;
+  font-weight:500;
+}
+
+.modal-box p{
+  margin-top:15px;
+  color:#777;
+  line-height:1.8;
+  font-size:13px;
+}
+
+.modal-reward{
+  margin-top:30px;
+  color:var(--accent);
+  font-family:var(--mono);
+  font-size:10px;
+}
+
+.complete-btn{
+  width:100%;
+  margin-top:35px;
+  padding:17px;
+  background:#fff;
+  color:#000;
+  border:0;
+  cursor:pointer;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  font-size:9px;
+}
+
+.complete-btn:hover{background:var(--accent)}
+
+/* TOAST */
+
+#toast{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translate(-50%,30px);
+  z-index:300;
+  background:#f4f0e9;
+  color:#050505;
+  padding:16px 25px;
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.12em;
+  opacity:0;
+  pointer-events:none;
+  transition:.5s;
+  white-space:nowrap;
+}
+
+#toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* EASTER EGG */
+
+.secret-symbol{
+  position:fixed;
+  bottom:18px;
+  right:20px;
+  color:#222;
+  font-family:var(--mono);
+  font-size:9px;
+  cursor:pointer;
+  z-index:20;
+  transition:.3s;
+}
+
+.secret-symbol:hover{color:var(--accent)}
+
+.flash{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  background:#fff;
+  opacity:0;
+  pointer-events:none;
+}
+
+.flash.active{animation:flash .7s ease}
+
+@keyframes flash{
+  0%{opacity:0}
+  15%{opacity:.9}
+  100%{opacity:0}
+}
+
+/* WORLD VARIANTS */
+
+.world.oct{--accent:#d7ff45;--worldGlow:rgba(215,255,69,.12)}
+.world.nov{--accent:#b9b9b9;--worldGlow:rgba(190,190,190,.1)}
+.world.dec{--accent:#f0e6c8;--worldGlow:rgba(240,230,200,.09)}
+.world.jan{--accent:#68d9ff;--worldGlow:rgba(104,217,255,.12)}
+.world.feb{--accent:#ff75a8;--worldGlow:rgba(255,117,168,.11)}
+.world.mar{--accent:#ffc86b;--worldGlow:rgba(255,200,107,.1)}
+.world.apr{--accent:#d4c7a1;--worldGlow:rgba(212,199,161,.1)}
+.world.may{--accent:#e6c57c;--worldGlow:rgba(230,197,124,.1)}
+.world.jun{--accent:#a883ff;--worldGlow:rgba(168,131,255,.12)}
+.world.jul{--accent:#ffad76;--worldGlow:rgba(255,173,118,.1)}
+.world.aug{--accent:#ff6565;--worldGlow:rgba(255,101,101,.13)}
+.world.sep{--accent:#fff;--worldGlow:rgba(255,255,255,.09)}
+
+/* MOBILE */
+
+@media(max-width:700px){
+  .topbar{padding:0 20px}
+  .xp-mini{display:none}
+  .progress-mini{width:70px}
+
+  .world-inner{width:88%;padding-top:55px}
+
+  .world-title{
+    font-size:clamp(62px,20vw,110px);
+  }
+
+  .world-stats{gap:25px}
+  .stat-value{font-size:18px}
+
+  .missions,
+  .extra-grid{
+    grid-template-columns:1fr;
+  }
+
+  .mission{min-height:280px}
+
+  .discovery{padding:30px 25px}
+
+  .brief-wrap{padding:55px 0}
+
+  .rule{
+    grid-template-columns:35px 1fr;
+    gap:15px;
+  }
+
+  .twenty{font-size:55vw}
+
+  .intro-title{
+    letter-spacing:.22em;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+
+<section id="intro">
+  <div class="intro-glow"></div>
+
+  <div class="intro-content">
+    <div class="kicker">PERSONAL ARCHIVE // 2026—27</div>
+    <div class="twenty">20</div>
+    <div class="intro-title">LEVEL 20</div>
+    <div class="intro-sub">SAMKIT // YEAR ONE OF TWENTY</div>
+
+    <button class="enter-btn" onclick="openBriefing()">
+      ENTER LEVEL 20 <span>→</span>
+    </button>
+  </div>
+</section>
+
+
+<!-- BRIEFING -->
+
+<section id="briefing">
+
+  <div class="brief-wrap">
+
+    <div class="brief-index">FILE 00 / PLAYER BRIEFING</div>
+
+    <h1 class="brief-title">
+      WELCOME,<br>
+      <em>SAMKU.</em>
+    </h1>
+
+    <div class="brief-copy">
+      This isn't a list of things you're supposed to do.
+      <br><br>
+      It's your twentieth year turned into a world.
+      <br><br>
+      Some things will be obvious.
+      Some won't.
+      Some things are hidden on purpose.
+      And some things will only appear after you've actually lived the year.
+    </div>
+
+    <div class="rules">
+
+      <div class="rule">
+        <div class="rule-num">01</div>
+        <div>
+          <strong>THERE ARE NO ORDINARY MONTHS.</strong>
+          <p>Every month is a different world. Enter it. Explore it. Don't rush through it.</p>
+        </div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-num">02</div>
+        <div>
+          <strong>THE VISIBLE THINGS ARE NOT EVERYTHING.</strong>
+          <p>Complete missions. Look around. Click things. Pay attention. Some discoveries aren't announced beforehand.</p>
+        </div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-num">03</div>
+        <div>
+          <strong>XP IS NOT THE POINT.</strong>
+          <p>XP keeps score. Memories are the actual reward.</p>
+        </div>
+      </div>
+
+      <div class="rule">
+        <div class="rule-num">04</div>
+        <div>
+          <strong>MAHEK IS PROBABLY HIDING SOMETHING.</strong>
+          <p>Don't assume you've found everything.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="start-year" onclick="startYear()">
+      Begin Year 20 →
+    </button>
+
+  </div>
+</section>
+
+
+<!-- APP -->
+
+<main id="app">
+
+  <header class="topbar">
+    <div class="brand">LEVEL 20 <span>// SAMKIT</span></div>
+
+    <div class="top-right">
+      <div class="xp-mini">
+        <span id="xpText">0 XP</span>
+      </div>
+
+      <div class="progress-mini">
+        <i id="xpBar"></i>
+      </div>
+
+      <button class="menu-btn" onclick="showStats()">STATUS</button>
+    </div>
+  </header>
+
+  <nav class="month-nav" id="monthNav"></nav>
+
+  <section id="world"></section>
+
+</main>
+
+
+<!-- MODAL -->
+
+<div id="modal">
+  <div class="modal-box">
+
+    <button class="modal-close" onclick="closeModal()">×</button>
+
+    <div class="modal-num" id="modalNum"></div>
+
+    <h2 id="modalTitle"></h2>
+
+    <p id="modalDescription"></p>
+
+    <div class="modal-reward" id="modalReward"></div>
+
+    <button class="complete-btn" id="completeBtn">
+      Mark Mission Complete
+    </button>
+
+  </div>
+</div>
+
+
+<div id="toast"></div>
+<div class="flash" id="flash"></div>
+
+<div class="secret-symbol" onclick="secretClick()">20</div>
+
+
+<script>
+
+/* =========================================================
+   LEVEL 20 — SAMKIT
+   Single-file cinematic birthday experience
+========================================================= */
+
+const months = [
+
+{
+ id:"oct",
+ short:"OCT",
+ name:"THE GAME",
+ display:"OCTOBER",
+ subtitle:"PLAYER ONE",
+ description:"The year begins where everything feels familiar — except now everything counts.",
+ achievement:"LEVEL 20 UNLOCKED",
+ missions:[
+  ["THE SPICE TEST","Eat something properly spicy. Capture the aftermath.","PHOTO / VIDEO",100],
+  ["VALORANT IRL","Explain one Valorant concept to Mahek without using gaming jargon.","VIDEO",200],
+  ["ROYAL ENFIELD","Pick the Royal Enfield you'd actually buy if nobody could stop you.","CHOICE",150],
+  ["APPRECIATION GLITCH","Do one unexpectedly sweet thing for Mahek without being asked.","MEMORY / PHOTO",500]
+ ],
+ side:[
+  ["LOADOUT","Show your current everyday essentials."],
+  ["BONUS ROUND","Do something just because it sounded fun."]
+ ],
+ discovery:"THE PLAYER PROFILE — Mahek has added one private observation about you."
+},
+
+{
+ id:"nov",
+ short:"NOV",
+ name:"THE FILES",
+ display:"NOVEMBER",
+ subtitle:"CLASSIFIED INVESTIGATION",
+ description:"Some people leave clues behind. Your job is to investigate the evidence.",
+ achievement:"FIELD AGENT",
+ missions:[
+  ["FRIEND GROUP FILE","Turn your friend group into a ridiculous crime case.","PHOTO",150],
+  ["SECOND-HAND INCIDENT","Find a second-hand object you'd genuinely consider owning.","PHOTO",150],
+  ["MEETHALI FILE","Give Meethali the documentary treatment. Thirty seconds. Dramatic.","VIDEO",100],
+  ["YUKTA // CLASSIFIED","Submit your official theory about the Yukta file.","CHOICE",250]
+ ],
+ side:[
+  ["CASE NOTE","Write one suspicious fact about someone in your friend group."],
+  ["EVIDENCE","Photograph something that looks like it belongs in a crime scene."]
+ ],
+ discovery:"FILE 02-B — An old memory has been classified. Access requires investigation."
+},
+
+{
+ id:"dec",
+ short:"DEC",
+ name:"THE PAPER",
+ display:"DECEMBER",
+ subtitle:"SPECIAL EDITION",
+ description:"December becomes a newspaper. You are simultaneously the headline, the editor and the story.",
+ achievement:"FRONT PAGE",
+ missions:[
+  ["HEADLINE","Write the headline you want next year to be true.","TEXT",150],
+  ["BREAKING NEWS","Document one genuinely good thing that happened this month.","PHOTO",100],
+  ["WANTED: APPRECIATION","Do something thoughtful without expecting anything back.","MEMORY",250],
+  ["EDITORIAL","Create the funniest fake headline about your friend group.","TEXT",100]
+ ],
+ side:[
+  ["CLASSIFIED AD","Write a fake newspaper advertisement for yourself."],
+  ["WEATHER REPORT","Describe your current life as a weather forecast."]
+ ],
+ discovery:"THE EDITOR'S NOTE — Someone has written something about you in the margin."
+},
+
+{
+ id:"jan",
+ short:"JAN",
+ name:"SYSTEM",
+ display:"JANUARY",
+ subtitle:"SYSTEM UPDATE",
+ description:"New year. New operating system. Not everything needs fixing. Some things simply need upgrading.",
+ achievement:"SYSTEM UPDATED",
+ missions:[
+  ["BODY UPGRADE","Choose a realistic physical upgrade and actually begin.","PHOTO",150],
+  ["BRAIN UPGRADE","Learn one thing deeply enough to explain it.","VIDEO",200],
+  ["LIFE UPGRADE","Try something you've never done before.","PHOTO",200],
+  ["BUG FIX","Identify one tiny habit you want to fix.","TEXT",150]
+ ],
+ side:[
+  ["PATCH NOTES","Write three things that changed about you."],
+  ["NEW FEATURE","Do something your January self couldn't do in December."]
+ ],
+ discovery:"VERSION 2.0 — A hidden system message has appeared."
+},
+
+{
+ id:"feb",
+ short:"FEB",
+ name:"CO-OP",
+ display:"FEBRUARY",
+ subtitle:"TWO PLAYER MODE",
+ description:"Some missions aren't meant to be completed alone.",
+ achievement:"CO-OP UNLOCKED",
+ missions:[
+  ["NO 'YOU DECIDE' DATE","Plan a date where neither person is allowed to say 'you decide'.","PHOTO",250],
+  ["JEALOUSY PATCH","Replace one teasing-jealousy moment with something that actually makes Mahek laugh.","VIDEO",200],
+  ["APPRECIATION REBOOT","Name three specific things you genuinely appreciate about Mahek.","TEXT",300],
+  ["CO-OP SIDE QUEST","Do something together neither of you has done before.","MEMORY",300]
+ ],
+ side:[
+  ["PLAYER TWO","Let Mahek choose one completely harmless challenge."],
+  ["SYNC","Do something at exactly the same time without planning it beforehand."]
+ ],
+ discovery:"PLAYER TWO HAS LEFT A MESSAGE."
+},
+
+{
+ id:"mar",
+ short:"MAR",
+ name:"ESCAPE",
+ display:"MARCH",
+ subtitle:"TRAVEL TERMINAL",
+ description:"The map is intentionally incomplete. The point is to go somewhere neither of you already knows.",
+ achievement:"EXPLORER",
+ missions:[
+  ["MINI ESCAPE","Go somewhere neither of you has explored.","PHOTO",250],
+  ["TRAVEL FILE","Document the best food, weirdest thing and best moment.","PHOTO",150],
+  ["NO-PLAN HOUR","Spend one hour with no detailed plan.","VIDEO",200],
+  ["POSTCARD FROM NOWHERE","Write one sentence you'll want to remember.","TEXT",100]
+ ],
+ side:[
+  ["UNKNOWN ROAD","Take a route you normally wouldn't."],
+  ["LOCAL DISCOVERY","Find something interesting within your own city."]
+ ],
+ discovery:"DESTINATION UNKNOWN — Coordinates have been unlocked."
+},
+
+{
+ id:"apr",
+ short:"APR",
+ name:"SURVIVAL",
+ display:"APRIL",
+ subtitle:"FIELD GUIDE",
+ description:"A month about getting out of your normal loop without pretending you're an outdoorsman.",
+ achievement:"SURVIVOR",
+ missions:[
+  ["SUNLIGHT DLC","Spend reasonable time outside doing something you actually enjoy.","PHOTO",100],
+  ["NEW FOOD","Order something you've never chosen before.","PHOTO",150],
+  ["OFF-SCREEN","Spend an evening without your usual entertainment routine.","MEMORY",200],
+  ["SURVIVAL REPORT","Write what you unexpectedly enjoyed.","TEXT",150]
+ ],
+ side:[
+  ["FIELD NOTE","Notice one thing you normally walk past."],
+  ["UNPLANNED","Say yes to one harmless spontaneous plan."]
+ ],
+ discovery:"FIELD NOTE 04 — Apparently, you survived April."
+},
+
+{
+ id:"may",
+ short:"MAY",
+ name:"CEO",
+ display:"MAY",
+ subtitle:"PRIVATE BUSINESS TERMINAL",
+ description:"No degree. No boardroom. No excuses. Just ideas and ₹10,000.",
+ achievement:"CEO MODE",
+ missions:[
+  ["₹10K PROBLEM","Build a tiny business idea using a ₹10,000 imaginary budget.","TEXT",300],
+  ["PITCH IT","Give Mahek a 60-second pitch.","VIDEO",200],
+  ["NO DEGREE REQUIRED","Pick a skill you want to become excellent at without a Master's.","CHOICE",150],
+  ["BRAND DETECTOR","Find one branded thing you genuinely think is worth the money.","PHOTO",100]
+ ],
+ side:[
+  ["CEO DECISION","Make one small decision like a CEO would."],
+  ["BAD INVESTMENT","Invent the funniest possible business idea."]
+ ],
+ discovery:"BOARD MINUTES — Your first imaginary company has been registered."
+},
+
+{
+ id:"jun",
+ short:"JUN",
+ name:"CHAOS",
+ display:"JUNE",
+ subtitle:"ARCADE MODE",
+ description:"There is absolutely no reason for this month to make sense.",
+ achievement:"CHAOS COORDINATOR",
+ missions:[
+  ["WHEEL OF BAD IDEAS","Generate a random harmless challenge and actually do it.","CHOICE",200],
+  ["DOUBLE OR NOTHING","Choose a previous-style challenge. Finish it for double XP.","VIDEO",400],
+  ["RANDOM FOOD","Order something unusual.","PHOTO",150],
+  ["CHAOS CALL","Call someone you haven't spoken to in a while.","MEMORY",150]
+ ],
+ side:[
+  ["BUTTON MASH","Tap five things in this month before deciding what they do."],
+  ["WILD CARD","Let a random number generator decide something harmless."]
+ ],
+ discovery:"ARCADE SECRET — You found the cabinet behind the cabinet."
+},
+
+{
+ id:"jul",
+ short:"JUL",
+ name:"ARCHIVE",
+ display:"JULY",
+ subtitle:"CHILDHOOD DATABASE",
+ description:"Before the plans, the brands, the Valorant games and everything else — there was you.",
+ achievement:"NOSTALGIA UNLOCKED",
+ missions:[
+  ["THE 10-YEAR-OLD","Do something your younger self would have absolutely loved.","PHOTO",200],
+  ["OLD FAVOURITE","Revisit a childhood favourite.","PHOTO",100],
+  ["MESSAGE TO 10","Tell younger Samkit something.","VIDEO",250],
+  ["COOL ENOUGH?","Would ten-year-old you think current you is cool? Explain.","TEXT",150]
+ ],
+ side:[
+  ["ARCHIVE PHOTO","Find an old photograph you haven't looked at recently."],
+  ["OLD SOUNDTRACK","Listen to one song from childhood."]
+ ],
+ discovery:"ARCHIVE 10 — A message has been restored from the past."
+},
+
+{
+ id:"aug",
+ short:"AUG",
+ name:"BOSS",
+ display:"AUGUST",
+ subtitle:"BOSS BATTLE",
+ description:"There is no tutorial for this month. You already know what the hard things are.",
+ achievement:"BOSS DEFEATED",
+ missions:[
+  ["THE HARD ONE","Do the thing you've been avoiding.","MEMORY",300],
+  ["THE PERSONAL ONE","Have the conversation you've been postponing.","MEMORY",300],
+  ["THE ADVENTURE ONE","Plan a memorable inexpensive day.","PHOTO",300],
+  ["SECRET BOSS","Do something thoughtful for someone without telling them it was a mission.","MEMORY",500]
+ ],
+ side:[
+  ["SECOND PHASE","Do one small thing immediately instead of postponing it."],
+  ["NO SAVE POINT","Try something without waiting for perfect conditions."]
+ ],
+ discovery:"BOSS PHASE II — You were never fighting the thing you thought you were."
+},
+
+{
+ id:"sep",
+ short:"SEP",
+ name:"FINALE",
+ display:"SEPTEMBER",
+ subtitle:"YEARBOOK // FINAL ARCHIVE",
+ description:"One year. Twelve worlds. Now the archive asks what actually mattered.",
+ achievement:"LEVEL 20 COMPLETE",
+ missions:[
+  ["YEAR IN 5 FRAMES","Tell the entire year through five photographs.","PHOTO ×5",250],
+  ["BEST FAILURE","Document something that went wrong but taught you something.","TEXT",200],
+  ["THE NEXT LEVEL","What should 21-year-old Samkit remember?","VIDEO",250],
+  ["FINAL CO-OP","Create one last memory with Mahek.","MEMORY",500]
+ ],
+ side:[
+  ["ARCHIVE COMPLETE","Choose the single moment from this year you would keep."],
+  ["AFTER CREDITS","Write one sentence about the person you became."]
+ ],
+ discovery:"THE FINAL FILE — This was never really about completing missions."
+}
+
+];
+
+let state={
+ xp:Number(localStorage.getItem("level20_xp")||0),
+ completed:JSON.parse(localStorage.getItem("level20_completed")||"[]"),
+ discoveries:JSON.parse(localStorage.getItem("level20_discoveries")||"[]"),
+ current:0,
+ secret:Number(localStorage.getItem("level20_secret")||0)
+};
+
+let currentMission=null;
+
+
+/* INTRO */
+
+function openBriefing(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("briefing").style.display="block";
+}
+
+
+/* START */
+
+function startYear(){
+  document.getElementById("briefing").style.display="none";
+  document.getElementById("app").style.display="block";
+
+  buildMonthNav();
+  renderMonth(0);
+
+  showToast("YEAR 20 INITIALIZED");
+}
+
+
+/* NAV */
+
+function buildMonthNav(){
+
+  const nav=document.getElementById("monthNav");
+  nav.innerHTML="";
+
+  months.forEach((m,i)=>{
+
+    const button=document.createElement("button");
+
+    button.className="month-pill";
+
+    if(i===state.current)button.classList.add("active");
+
+    if(isMonthComplete(i))button.classList.add("complete");
+
+    button.innerHTML=`${m.short} ${isMonthComplete(i)?"✓":""}`;
+
+    button.onclick=()=>renderMonth(i);
+
+    nav.appendChild(button);
+
+  });
+}
+
+
+/* MONTH */
+
+function renderMonth(index){
+
+  state.current=index;
+
+  const month=months[index];
+
+  const completedCount=month.missions.filter((_,i)=>
+    state.completed.includes(index+"-"+i)
+  ).length;
+
+  const unlocked=index===0 || index<=highestAccessibleMonth()+1;
+
+  document.querySelectorAll(".month-pill").forEach((b,i)=>{
+    b.classList.toggle("active",i===index);
+  });
+
+  if(!unlocked){
+
+    document.getElementById("world").innerHTML=`
+
+      <section class="world ${month.id}">
+
+        <div class="world-bg"></div>
+
+        <div class="world-inner">
+
+          <div class="world-meta">
+            <span>${String(index+1).padStart(2,"0")} / 12</span>
+            <span>LOCKED WORLD</span>
+          </div>
+
+          <div class="world-title">
+            <em>NOT YET.</em>
+          </div>
+
+          <div class="world-description">
+            This world isn't ready yet.
+            Complete the previous chapter first.
+            Some parts of the year are meant to arrive slowly.
+          </div>
+
+        </div>
+
+      </section>
+    `;
+
+    return;
+  }
+
+
+  document.getElementById("world").innerHTML=`
+
+    <section class="world ${month.id}">
+
+      <div class="world-bg"></div>
+
+      <div class="world-inner">
+
+        <div class="world-meta">
+          <span class="world-num">
+            WORLD ${String(index+1).padStart(2,"0")}
+          </span>
+
+          <span>${month.subtitle}</span>
+        </div>
+
+        <h1 class="world-title">
+          ${formatTitle(month.display)}
+        </h1>
+
+        <div class="world-description">
+          ${month.description}
+        </div>
+
+        <div class="world-stats">
+
+          <div>
+            <div class="stat-label">MISSIONS</div>
+            <div class="stat-value">${completedCount}/4</div>
+          </div>
+
+          <div>
+            <div class="stat-label">XP AVAILABLE</div>
+            <div class="stat-value">
+              ${month.missions.reduce((a,m)=>a+m[3],0)}
+            </div>
+          </div>
+
+          <div>
+            <div class="stat-label">STATUS</div>
+            <div class="stat-value">
+              ${completedCount===4?"COMPLETE":"ACTIVE"}
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="section-label">
+          <span>MAIN MISSIONS</span>
+          <span>${completedCount}/4 COMPLETE</span>
+        </div>
+
+        <div class="missions">
+
+          ${month.missions.map((m,i)=>missionHTML(m,i,index)).join("")}
+
+        </div>
+
+
+        <div class="section-label">
+          <span>SIDE QUESTS</span>
+          <span>OPTIONAL</span>
+        </div>
+
+        <div class="extra-grid">
+
+          ${month.side.map((s,i)=>`
+
+            <div class="extra" onclick="sideQuest(${index},${i})">
+
+              <small>SIDE QUEST // ${String(i+1).padStart(2,"0")}</small>
+
+              <h4>${s[0]}</h4>
+
+              <p>${s[1]}</p>
+
+            </div>
+
+          `).join("")}
+
+        </div>
+
+
+        <div class="achievement">
+
+          <div class="achievement-icon">
+            ${completedCount===4?"✓":"?"}
+          </div>
+
+          <div>
+
+            <small>ACHIEVEMENT</small>
+
+            <strong>${month.achievement}</strong>
+
+          </div>
+
+        </div>
+
+
+        ${
+          state.discoveries.includes(index)
+          ?
+          `
+          <div class="discovery">
+
+            <div class="discovery-tag">
+              SECRET FILE DISCOVERED
+            </div>
+
+            <h3>${month.discovery}</h3>
+
+            <p>
+              You weren't told to look for this.
+              That's sort of the point.
+            </p>
+
+          </div>
+          :
+          ""
+        }
+
+
+      </div>
+
+    </section>
+  `;
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+
+/* MISSION HTML */
+
+function missionHTML(m,i,monthIndex){
+
+  const key=monthIndex+"-"+i;
+  const complete=state.completed.includes(key);
+
+  const previousComplete=i===0 ||
+    state.completed.includes(monthIndex+"-"+(i-1));
+
+  const locked=!previousComplete;
+
+  return `
+
+    <article
+      class="mission ${complete?"completed":""} ${locked?"locked":""}"
+      ${locked?"":"onclick=\"openMission("+monthIndex+","+i+")\""}
+
+    >
+
+      <div class="mission-number">
+        MISSION ${String(i+1).padStart(2,"0")}
+      </div>
+
+      <div class="mission-status">
+        ${complete?"COMPLETE":"+"+m[3]+" XP"}
+      </div>
+
+      <h3>${m[0]}</h3>
+
+      <p>${m[1]}</p>
+
+      <div class="mission-bottom">
+
+        <div class="type">${m[2]}</div>
+
+        <div class="reward">
+          ${locked?"LOCKED":complete?"CLEARED":"OPEN →"}
+        </div>
+
+      </div>
+
+    </article>
+  `;
+}
+
+
+/* OPEN MISSION */
+
+function openMission(monthIndex,index){
+
+  const m=months[monthIndex].missions[index];
+
+  currentMission={monthIndex,index};
+
+  document.getElementById("modalNum").textContent=
+    `WORLD ${String(monthIndex+1).padStart(2,"0")} // MISSION ${String(index+1).padStart(2,"0")}`;
+
+  document.getElementById("modalTitle").textContent=m[0];
+
+  document.getElementById("modalDescription").textContent=m[1];
+
+  document.getElementById("modalReward").textContent=
+    `REWARD // +${m[3]} XP`;
+
+  const btn=document.getElementById("completeBtn");
+
+  btn.textContent=
+    state.completed.includes(monthIndex+"-"+index)
+    ?"MISSION ALREADY CLEARED"
+    :"MARK MISSION COMPLETE";
+
+  btn.disabled=state.completed.includes(monthIndex+"-"+index);
+
+  btn.onclick=completeMission;
+
+  document.getElementById("modal").style.display="flex";
+}
+
+
+/* COMPLETE */
+
+function completeMission(){
+
+  if(!currentMission)return;
+
+  const {monthIndex,index}=currentMission;
+
+  const key=monthIndex+"-"+index;
+
+  if(state.completed.includes(key))return;
+
+  const mission=months[monthIndex].missions[index];
+
+  state.completed.push(key);
+
+  state.xp+=mission[3];
+
+  localStorage.setItem("level20_xp",state.xp);
+
+  localStorage.setItem(
+    "level20_completed",
+    JSON.stringify(state.completed)
+  );
+
+  closeModal();
+
+  flash();
+
+  showToast(`MISSION CLEARED  +${mission[3]} XP`);
+
+  updateXP();
+
+  /* unlock discovery */
+
+  const count=months[monthIndex].missions.filter((_,i)=>
+    state.completed.includes(monthIndex+"-"+i)
+  ).length;
+
+  if(count===2 && !state.discoveries.includes(monthIndex)){
+
+    state.discoveries.push(monthIndex);
+
+    localStorage.setItem(
+      "level20_discoveries",
+      JSON.stringify(state.discoveries)
+    );
+
+    setTimeout(()=>{
+      showToast("SECRET FILE DISCOVERED");
+    },900);
+
+  }
+
+  buildMonthNav();
+
+  setTimeout(()=>renderMonth(monthIndex),500);
+}
+
+
+/* SIDE QUEST */
+
+function sideQuest(monthIndex,index){
+
+  const q=months[monthIndex].side[index];
+
+  state.xp+=50;
+
+  localStorage.setItem("level20_xp",state.xp);
+
+  updateXP();
+
+  showToast(`SIDE QUEST ACCEPTED  +50 XP`);
+
+}
+
+
+/* XP */
+
+function updateXP(){
+
+  document.getElementById("xpText").textContent=
+    `${state.xp.toLocaleString()} XP`;
+
+  const percent=Math.min(100,(state.xp/5000)*100);
+
+  document.getElementById("xpBar").style.width=percent+"%";
+}
+
+
+/* ACCESS */
+
+function highestAccessibleMonth(){
+
+  let highest=0;
+
+  for(let i=0;i<months.length;i++){
+
+    const complete=months[i].missions.every((_,j)=>
+      state.completed.includes(i+"-"+j)
+    );
+
+    if(complete)highest=i;
+
+    else break;
+
+  }
+
+  return highest;
+}
+
+
+/* COMPLETE MONTH */
+
+function isMonthComplete(index){
+
+  return months[index].missions.every((_,j)=>
+    state.completed.includes(index+"-"+j)
+  );
+
+}
+
+
+/* TITLE */
+
+function formatTitle(title){
+
+  const words=title.split(" ");
+
+  if(words.length===1)return title;
+
+  const first=words.slice(0,-1).join(" ");
+
+  const last=words[words.length-1];
+
+  return `${first}<br><em>${last}</em>`;
+
+}
+
+
+/* MODAL */
+
+function closeModal(){
+
+  document.getElementById("modal").style.display="none";
+
+  currentMission=null;
+
+}
+
+
+/* TOAST */
+
+let toastTimer;
+
+function showToast(message){
+
+  const toast=document.getElementById("toast");
+
+  toast.textContent=message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+    toast.classList.remove("show");
+  },2600);
+
+}
+
+
+/* FLASH */
+
+function flash(){
+
+  const f=document.getElementById("flash");
+
+  f.classList.remove("active");
+
+  void f.offsetWidth;
+
+  f.classList.add("active");
+
+}
+
+
+/* STATUS */
+
+function showStats(){
+
+  const completed=state.completed.length;
+
+  const percent=Math.round((completed/48)*100);
+
+  alert(
+`LEVEL 20 // STATUS
+
+SAMKIT
+
+XP: ${state.xp}
+MISSIONS: ${completed}/48
+PROGRESS: ${percent}%
+
+SECRET FILES: ${state.discoveries.length}/12
+
+YEAR STATUS:
+${percent===100?"LEVEL 20 COMPLETE":"IN PROGRESS"}`
+  );
+
+}
+
+
+/* SECRET EASTER EGG */
+
+function secretClick(){
+
+  state.secret++;
+
+  localStorage.setItem("level20_secret",state.secret);
+
+  if(state.secret===1){
+
+    showToast("YOU FOUND THE THING THAT WASN'T THERE");
+
+  }else if(state.secret===3){
+
+    showToast("WHY ARE YOU CLICKING THIS");
+
+  }else if(state.secret===5){
+
+    showToast("OKAY SAMKU. YOU WIN.");
+
+  }else if(state.secret===7){
+
+    flash();
+
+    showToast("SECRET LEVEL // MAHEK KNOWS");
+
+  }else{
+
+    showToast("...");
+  }
+
+}
+
+
+/* KEYBOARD */
+
+document.addEventListener("keydown",e=>{
+
+  if(e.key==="Escape")closeModal();
+
+  if(e.key==="Enter" && document.getElementById("intro").style.display!=="none"){
+    openBriefing();
+  }
+
+});
+
+
+/* INIT */
+
+updateXP();
+
+</script>
+
+</body>
+</html>
