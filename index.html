@@ -1,11 +1,8 @@
-<!DOCTYPE html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
-<meta name="apple-mobile-web-app-capable" content="yes">
-
 <title>LEVEL 20 — Samkit</title>
 
 <style>
@@ -15,25 +12,28 @@
   padding:0;
 }
 
+:root{
+  --bg:#080808;
+  --paper:#f3efe7;
+  --muted:#989898;
+  --line:rgba(255,255,255,.1);
+  --white:#f7f7f4;
+  --accent:#d7ff55;
+}
+
 html{
   scroll-behavior:smooth;
 }
 
 body{
+  background:#080808;
+  color:var(--white);
   font-family:Arial, Helvetica, sans-serif;
-  background:#050505;
-  color:#f4f1eb;
   overflow-x:hidden;
 }
 
-button,
-textarea,
-input{
-  font:inherit;
-}
-
 button{
-  cursor:pointer;
+  font:inherit;
 }
 
 .hidden{
@@ -41,7 +41,7 @@ button{
 }
 
 /* =========================
-   GLOBAL ATMOSPHERE
+   GRAIN / ATMOSPHERE
 ========================= */
 
 body::before{
@@ -49,26 +49,22 @@ body::before{
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:100;
-  opacity:.06;
-  background-image:
-    radial-gradient(circle at 20% 30%, white 0 1px, transparent 1px),
-    radial-gradient(circle at 80% 70%, white 0 1px, transparent 1px);
-  background-size:7px 7px,11px 11px;
-  mix-blend-mode:screen;
+  z-index:999;
+  opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
 }
 
 body::after{
   content:"";
   position:fixed;
-  inset:0;
+  width:70vw;
+  height:70vw;
+  border-radius:50%;
+  left:50%;
+  top:40%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(255,255,255,.035),transparent 65%);
   pointer-events:none;
-  z-index:99;
-  background:radial-gradient(
-    ellipse at center,
-    transparent 35%,
-    rgba(0,0,0,.55) 100%
-  );
 }
 
 /* =========================
@@ -76,26 +72,26 @@ body::after{
 ========================= */
 
 #intro{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  background:
-    radial-gradient(circle at center, #171717 0%, #080808 45%, #000 100%);
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
+  position:relative;
   overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(255,255,255,.07),transparent 28%),
+    radial-gradient(circle at 20% 80%,rgba(120,120,255,.04),transparent 30%),
+    #050505;
 }
 
 .intro-glow{
   position:absolute;
-  width:500px;
-  height:500px;
+  width:420px;
+  height:420px;
   border-radius:50%;
-  background:rgba(255,255,255,.035);
-  filter:blur(70px);
-  animation:breathe 5s infinite ease-in-out;
+  background:rgba(255,255,255,.045);
+  filter:blur(80px);
+  animation:breathe 5s ease-in-out infinite;
 }
 
 @keyframes breathe{
@@ -106,65 +102,85 @@ body::after{
 .intro-content{
   position:relative;
   z-index:2;
-  animation:introIn 1.6s ease forwards;
-}
-
-@keyframes introIn{
-  from{
-    opacity:0;
-    transform:translateY(25px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+  text-align:center;
+  padding:30px;
 }
 
 .intro-number{
-  font-size:clamp(150px,30vw,360px);
-  line-height:.75;
-  font-weight:900;
+  font-size:clamp(150px,32vw,430px);
+  line-height:.72;
   letter-spacing:-.09em;
-  color:#fff;
-  opacity:.94;
+  font-weight:900;
+  color:#f4f4f1;
+  text-shadow:0 0 80px rgba(255,255,255,.08);
+  animation:introNumber 2s ease forwards;
+}
+
+@keyframes introNumber{
+  from{
+    opacity:0;
+    transform:scale(1.15);
+    filter:blur(15px);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0);
+  }
 }
 
 .intro-kicker{
   margin-top:35px;
   font-size:11px;
-  letter-spacing:7px;
-  color:#777;
+  letter-spacing:.35em;
+  color:#999;
+  animation:fadeUp 1s .7s both;
 }
 
 .intro-name{
-  margin-top:14px;
-  font-size:clamp(30px,7vw,72px);
+  margin-top:13px;
+  font-size:clamp(30px,6vw,70px);
   font-weight:800;
-  letter-spacing:12px;
+  letter-spacing:.12em;
+  animation:fadeUp 1s .9s both;
 }
 
 .intro-sub{
   margin-top:18px;
   color:#777;
-  font-size:12px;
-  letter-spacing:3px;
+  font-size:11px;
+  letter-spacing:.25em;
+  animation:fadeUp 1s 1.1s both;
 }
 
 .enter-btn{
-  margin-top:55px;
-  border:1px solid rgba(255,255,255,.35);
+  margin-top:45px;
+  padding:17px 28px;
+  border:1px solid rgba(255,255,255,.3);
   background:rgba(255,255,255,.04);
   color:white;
-  padding:17px 35px;
-  letter-spacing:4px;
+  cursor:pointer;
   font-size:11px;
+  letter-spacing:.22em;
   transition:.3s;
+  animation:fadeUp 1s 1.3s both;
 }
 
 .enter-btn:hover{
   background:white;
-  color:#000;
+  color:#050505;
   transform:translateY(-3px);
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(18px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 /* =========================
@@ -173,85 +189,80 @@ body::after{
 
 #briefing{
   min-height:100vh;
+  padding:8vw 7vw;
   background:
-    radial-gradient(circle at 80% 20%, #191919, transparent 35%),
-    #080808;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:50px 20px;
+    radial-gradient(circle at 80% 20%,rgba(255,255,255,.05),transparent 30%),
+    #090909;
 }
 
 .briefing-inner{
-  max-width:850px;
-  width:100%;
+  max-width:900px;
+  margin:auto;
 }
 
-.briefing-small{
+.briefing-label{
   color:#777;
-  letter-spacing:5px;
   font-size:10px;
-  margin-bottom:25px;
+  letter-spacing:.3em;
+  margin-bottom:35px;
 }
 
 .briefing-title{
-  font-size:clamp(55px,10vw,120px);
+  font-size:clamp(50px,9vw,110px);
   line-height:.9;
-  letter-spacing:-5px;
-  margin-bottom:40px;
+  letter-spacing:-.06em;
+  font-weight:900;
 }
 
-.briefing-copy{
+.briefing-title span{
+  color:#555;
+}
+
+.briefing-text{
+  max-width:650px;
+  margin-top:45px;
   color:#aaa;
-  font-size:17px;
-  line-height:1.8;
-  max-width:700px;
-}
-
-.briefing-grid{
-  margin-top:50px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-}
-
-.briefing-card{
-  border:1px solid rgba(255,255,255,.1);
-  padding:25px;
-  background:rgba(255,255,255,.025);
-}
-
-.briefing-card span{
-  display:block;
-  color:#666;
-  font-size:9px;
-  letter-spacing:3px;
-  margin-bottom:12px;
-}
-
-.briefing-card strong{
+  line-height:1.9;
   font-size:15px;
-  line-height:1.5;
+}
+
+.rules{
+  margin-top:45px;
+  border-top:1px solid var(--line);
+}
+
+.rule{
+  padding:20px 0;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  gap:25px;
+  color:#bbb;
+}
+
+.rule-number{
+  color:#555;
+  font-family:monospace;
 }
 
 .begin-btn{
   margin-top:45px;
-  background:#f4f1eb;
-  color:#080808;
-  border:none;
-  padding:18px 35px;
+  padding:17px 28px;
+  border:1px solid white;
+  background:white;
+  color:black;
+  cursor:pointer;
+  letter-spacing:.15em;
   font-size:11px;
-  letter-spacing:4px;
-  font-weight:bold;
   transition:.3s;
 }
 
 .begin-btn:hover{
   transform:translateY(-3px);
+  box-shadow:0 15px 50px rgba(255,255,255,.08);
 }
 
 /* =========================
-   APP
+   APP HEADER
 ========================= */
 
 #app{
@@ -259,55 +270,46 @@ body::after{
   background:#080808;
 }
 
-.app-header{
+.topbar{
   position:sticky;
   top:0;
-  z-index:20;
-  background:rgba(5,5,5,.82);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.header-inner{
-  max-width:1250px;
-  margin:auto;
-  padding:18px 25px;
+  z-index:50;
+  height:72px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  gap:20px;
+  justify-content:space-between;
+  padding:0 5vw;
+  border-bottom:1px solid var(--line);
+  background:rgba(8,8,8,.82);
+  backdrop-filter:blur(18px);
 }
 
 .logo{
-  font-size:14px;
-  font-weight:bold;
-  letter-spacing:4px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.2em;
 }
 
-.header-right{
+.top-stats{
   display:flex;
+  gap:25px;
   align-items:center;
-  gap:20px;
 }
 
-.xp-box{
-  font-size:11px;
+.xp-display{
+  font-family:monospace;
   color:#aaa;
-  letter-spacing:2px;
+  font-size:11px;
 }
 
 .status-btn{
-  border:1px solid rgba(255,255,255,.18);
+  border:1px solid var(--line);
   background:none;
   color:#aaa;
-  padding:9px 13px;
+  padding:9px 12px;
+  cursor:pointer;
   font-size:9px;
-  letter-spacing:2px;
-}
-
-.status-btn:hover{
-  color:white;
-  border-color:white;
+  letter-spacing:.15em;
 }
 
 /* =========================
@@ -315,586 +317,592 @@ body::after{
 ========================= */
 
 .month-nav{
-  max-width:1250px;
-  margin:auto;
-  padding:20px 25px 5px;
   display:flex;
-  gap:7px;
+  gap:8px;
   overflow-x:auto;
+  padding:15px 5vw;
+  border-bottom:1px solid var(--line);
+  scrollbar-width:none;
+}
+
+.month-nav::-webkit-scrollbar{
+  display:none;
 }
 
 .month-btn{
-  flex:0 0 auto;
-  border:1px solid rgba(255,255,255,.08);
-  background:#101010;
+  flex:none;
+  border:1px solid var(--line);
+  background:#0c0c0c;
   color:#666;
-  padding:10px 13px;
+  padding:10px 14px;
+  cursor:pointer;
   font-size:9px;
-  letter-spacing:2px;
+  letter-spacing:.15em;
+  transition:.25s;
 }
 
 .month-btn.active{
-  background:#eee;
-  color:#080808;
+  color:white;
+  border-color:#888;
+  background:#151515;
+}
+
+.month-btn.unlocked:hover{
+  color:white;
+  border-color:#aaa;
 }
 
 .month-btn.locked{
-  opacity:.3;
+  cursor:not-allowed;
+  opacity:.35;
 }
 
 /* =========================
-   MONTH WORLD
+   WORLD
 ========================= */
 
 .world{
-  min-height:calc(100vh - 130px);
-  padding:60px 25px 100px;
-  display:none;
+  min-height:calc(100vh - 120px);
+  padding:7vw 5vw 100px;
   position:relative;
   overflow:hidden;
-}
-
-.world.active{
-  display:block;
-  animation:worldIn .7s ease;
-}
-
-@keyframes worldIn{
-  from{
-    opacity:0;
-    transform:translateY(15px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
 }
 
 .world::before{
   content:"";
   position:absolute;
-  width:600px;
-  height:600px;
-  border-radius:50%;
-  filter:blur(100px);
-  opacity:.12;
+  inset:0;
   pointer-events:none;
-}
-
-/* Month identities */
-
-.world.october{
+  opacity:.5;
   background:
-    linear-gradient(120deg,rgba(255,255,255,.025),transparent),
-    #090909;
+    radial-gradient(circle at 80% 20%,var(--world-glow,rgba(255,255,255,.06)),transparent 28%);
 }
 
-.world.october::before{
-  background:#fff;
-  top:-300px;
-  right:-200px;
-}
-
-.world.november{
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,.015) 0 1px,
-      transparent 1px 5px
-    ),
-    #111;
-}
-
-.world.december{
-  background:
-    linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px),
-    #101010;
-  background-size:40px 40px;
-}
-
-.world.january{
-  background:
-    radial-gradient(circle at 50% 20%,#182020,transparent 50%),
-    #050909;
-}
-
-.world.february{
-  background:
-    radial-gradient(circle at 20% 50%,rgba(255,255,255,.05),transparent 35%),
-    radial-gradient(circle at 80% 50%,rgba(255,255,255,.03),transparent 35%),
-    #0b090b;
-}
-
-.world.march{
-  background:
-    linear-gradient(135deg,#10100e,#080807);
-}
-
-.world.april{
-  background:
-    linear-gradient(180deg,#12110d,#080807);
-}
-
-.world.may{
-  background:
-    radial-gradient(circle at 50% 10%,#25221c,transparent 45%),
-    #0b0a08;
-}
-
-.world.june{
-  background:
-    repeating-linear-gradient(
-      45deg,
-      rgba(255,255,255,.015) 0 2px,
-      transparent 2px 10px
-    ),
-    #0b0b0b;
-}
-
-.world.july{
-  background:
-    radial-gradient(circle at 30% 30%,#201d18,transparent 40%),
-    #0c0b09;
-}
-
-.world.august{
-  background:
-    radial-gradient(circle at center,#181818,transparent 45%),
-    #050505;
-}
-
-.world.september{
-  background:
-    linear-gradient(180deg,#151515,#060606);
-}
-
-.world-inner{
-  max-width:1100px;
-  margin:auto;
+.world-content{
   position:relative;
   z-index:2;
+  max-width:1250px;
+  margin:auto;
 }
 
-.world-label{
-  color:#666;
-  letter-spacing:5px;
-  font-size:10px;
-  margin-bottom:20px;
+.world-header{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:40px;
+  align-items:end;
+  margin-bottom:65px;
+}
+
+.world-index{
+  font-family:monospace;
+  color:#555;
+  font-size:11px;
+  letter-spacing:.2em;
+  margin-bottom:18px;
 }
 
 .world-title{
-  font-size:clamp(60px,12vw,145px);
-  line-height:.78;
+  font-size:clamp(55px,9vw,125px);
+  line-height:.82;
   letter-spacing:-.07em;
   font-weight:900;
 }
 
 .world-subtitle{
-  margin-top:25px;
-  color:#888;
-  font-size:13px;
   max-width:500px;
-  line-height:1.7;
-}
-
-.world-progress{
-  margin-top:35px;
-  display:flex;
-  align-items:center;
-  gap:15px;
+  margin-top:25px;
   color:#777;
+  line-height:1.7;
+  font-size:13px;
+}
+
+.world-achievement{
+  text-align:right;
+}
+
+.achievement-label{
+  color:#555;
   font-size:9px;
-  letter-spacing:2px;
+  letter-spacing:.2em;
 }
 
-.progress-line{
-  width:180px;
-  height:2px;
-  background:#222;
-}
-
-.progress-fill{
-  height:100%;
-  background:#eee;
-  width:0%;
-  transition:.5s;
+.achievement-name{
+  margin-top:10px;
+  font-size:13px;
+  letter-spacing:.15em;
 }
 
 /* =========================
    MISSIONS
 ========================= */
 
-.section-title{
-  margin-top:80px;
-  margin-bottom:25px;
-  color:#777;
+.section-label{
   font-size:9px;
-  letter-spacing:4px;
+  letter-spacing:.3em;
+  color:#555;
+  margin-bottom:18px;
 }
 
 .mission-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:14px;
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
 }
 
-.mission{
-  position:relative;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.025);
-  padding:28px;
-  min-height:210px;
+.mission-card{
+  background:#0a0a0a;
+  min-height:300px;
+  padding:30px;
   cursor:pointer;
-  transition:.35s;
+  position:relative;
   overflow:hidden;
+  transition:.35s;
 }
 
-.mission:hover{
-  transform:translateY(-5px);
-  border-color:rgba(255,255,255,.3);
-  background:rgba(255,255,255,.045);
-}
-
-.mission.locked{
-  opacity:.3;
-  cursor:not-allowed;
-}
-
-.mission.completed{
-  border-color:rgba(255,255,255,.3);
-}
-
-.mission.completed::after{
-  content:"✓";
+.mission-card::after{
+  content:"";
   position:absolute;
-  right:20px;
-  top:17px;
-  font-size:22px;
-  color:#fff;
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  right:-100px;
+  bottom:-100px;
+  background:var(--world-glow,rgba(255,255,255,.04));
+  filter:blur(40px);
+  transition:.5s;
+}
+
+.mission-card:hover{
+  background:#101010;
+  transform:translateY(-3px);
+}
+
+.mission-card:hover::after{
+  transform:scale(1.5);
 }
 
 .mission-number{
-  font-size:9px;
-  letter-spacing:3px;
+  font-family:monospace;
+  color:#444;
+  font-size:10px;
+}
+
+.mission-type{
+  position:absolute;
+  right:25px;
+  top:25px;
   color:#555;
+  font-size:8px;
+  letter-spacing:.18em;
 }
 
 .mission-title{
-  margin-top:20px;
-  font-size:22px;
-  font-weight:700;
-  letter-spacing:-.5px;
+  margin-top:65px;
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:-.03em;
 }
 
-.mission-description{
+.mission-desc{
+  color:#777;
   margin-top:12px;
-  color:#888;
-  font-size:12px;
   line-height:1.6;
+  font-size:12px;
+  max-width:430px;
 }
 
-.mission-footer{
+.mission-bottom{
   position:absolute;
-  left:28px;
-  right:28px;
-  bottom:22px;
+  left:30px;
+  right:30px;
+  bottom:25px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  color:#666;
-  font-size:9px;
-  letter-spacing:2px;
 }
 
-.proof-tags{
-  display:flex;
-  gap:7px;
-}
-
-.proof-tag{
-  border:1px solid rgba(255,255,255,.14);
-  padding:4px 7px;
+.xp{
   color:#aaa;
+  font-family:monospace;
+  font-size:11px;
 }
 
-/* =========================
-   SIDE QUESTS
-========================= */
-
-.side-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-.side-card{
-  padding:20px;
-  border:1px dashed rgba(255,255,255,.12);
-  color:#999;
-  background:rgba(255,255,255,.015);
-  min-height:100px;
-}
-
-.side-card strong{
-  display:block;
-  color:#eee;
-  margin-bottom:8px;
-  font-size:12px;
-}
-
-.side-card span{
-  font-size:10px;
-  line-height:1.5;
-}
-
-/* =========================
-   DISCOVERY
-========================= */
-
-.discovery-box{
-  margin-top:70px;
-  border:1px solid rgba(255,255,255,.1);
-  padding:35px;
-  background:rgba(255,255,255,.02);
-}
-
-.discovery-label{
-  color:#555;
+.mission-status{
   font-size:9px;
-  letter-spacing:4px;
+  letter-spacing:.12em;
+  color:#555;
 }
 
-.discovery-title{
-  margin-top:15px;
-  font-size:25px;
+.mission-status.complete{
+  color:var(--accent);
 }
 
-.discovery-copy{
-  margin-top:10px;
-  color:#777;
-  font-size:12px;
-  line-height:1.7;
+.proof-dot{
+  display:inline-block;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#555;
+  margin-right:7px;
+}
+
+.proof-dot.has-proof{
+  background:var(--accent);
 }
 
 /* =========================
-   ACHIEVEMENT
+   EXTRA CONTENT
 ========================= */
 
-.achievement{
-  margin-top:30px;
+.extra-sections{
+  margin-top:70px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+.extra-box{
+  border:1px solid var(--line);
   padding:30px;
-  border:1px solid rgba(255,255,255,.12);
-  background:linear-gradient(
-    120deg,
-    rgba(255,255,255,.05),
-    transparent
-  );
+  min-height:180px;
+  background:rgba(255,255,255,.015);
 }
 
-.achievement small{
-  color:#555;
-  letter-spacing:4px;
-  font-size:8px;
+.extra-box h3{
+  font-size:12px;
+  letter-spacing:.2em;
+  margin-bottom:18px;
 }
 
-.achievement h3{
+.extra-box p{
+  color:#777;
+  line-height:1.7;
+  font-size:12px;
+}
+
+.side-quest{
+  border-top:1px solid var(--line);
+  padding:15px 0;
+  display:flex;
+  justify-content:space-between;
+  color:#777;
+  font-size:11px;
+}
+
+.discovery{
   margin-top:12px;
-  font-size:25px;
+  color:#999;
+  font-family:monospace;
+  font-size:10px;
+}
+
+.discovery.locked{
+  color:#333;
+}
+
+/* =========================
+   WORLD THEMES
+========================= */
+
+.world-oct{
+  --world-glow:rgba(130,150,255,.08);
+}
+
+.world-nov{
+  --world-glow:rgba(190,190,190,.07);
+  background:#090909;
+}
+
+.world-dec{
+  --world-glow:rgba(190,120,80,.07);
+  background:#0d0c0a;
+}
+
+.world-jan{
+  --world-glow:rgba(100,180,255,.08);
+  background:#070a0d;
+}
+
+.world-feb{
+  --world-glow:rgba(255,100,170,.07);
+  background:#0b080b;
+}
+
+.world-mar{
+  --world-glow:rgba(100,180,140,.07);
+  background:#080c0a;
+}
+
+.world-apr{
+  --world-glow:rgba(230,190,80,.07);
+  background:#0d0b07;
+}
+
+.world-may{
+  --world-glow:rgba(210,180,100,.08);
+  background:#0b0a07;
+}
+
+.world-jun{
+  --world-glow:rgba(180,90,255,.08);
+  background:#0a070d;
+}
+
+.world-jul{
+  --world-glow:rgba(100,150,255,.07);
+  background:#080a0e;
+}
+
+.world-aug{
+  --world-glow:rgba(255,70,70,.08);
+  background:#0d0707;
+}
+
+.world-sep{
+  --world-glow:rgba(255,255,255,.09);
+  background:#080808;
 }
 
 /* =========================
    MODAL
 ========================= */
 
-.modal-backdrop{
+.modal-overlay{
   position:fixed;
   inset:0;
+  z-index:200;
   background:rgba(0,0,0,.82);
-  backdrop-filter:blur(15px);
-  z-index:80;
+  backdrop-filter:blur(18px);
   display:none;
   align-items:center;
   justify-content:center;
   padding:20px;
 }
 
-.modal-backdrop.show{
+.modal-overlay.open{
   display:flex;
-  animation:fadeIn .25s ease;
-}
-
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
 }
 
 .modal{
-  width:min(650px,100%);
+  width:min(720px,100%);
   max-height:90vh;
   overflow-y:auto;
-  background:#101010;
-  border:1px solid rgba(255,255,255,.16);
-  padding:35px;
-  box-shadow:0 30px 100px rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.14);
+  background:#0d0d0d;
+  box-shadow:0 40px 120px rgba(0,0,0,.7);
+  animation:modalIn .3s ease;
+}
+
+@keyframes modalIn{
+  from{
+    opacity:0;
+    transform:translateY(25px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
 }
 
 .modal-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:20px;
+  padding:28px 30px;
+  border-bottom:1px solid var(--line);
 }
 
 .modal-number{
   color:#555;
-  font-size:9px;
-  letter-spacing:3px;
+  font-family:monospace;
+  font-size:10px;
 }
 
 .modal-title{
-  margin-top:10px;
-  font-size:32px;
-  line-height:1.1;
+  margin-top:15px;
+  font-size:36px;
+  line-height:1;
+  letter-spacing:-.04em;
 }
 
-.modal-description{
-  margin-top:18px;
+.modal-desc{
+  margin-top:15px;
   color:#888;
   font-size:13px;
   line-height:1.7;
 }
 
-.close-x{
-  background:none;
-  border:none;
-  color:#777;
-  font-size:22px;
-}
-
-.proof-section{
-  margin-top:30px;
-  border-top:1px solid rgba(255,255,255,.08);
-  padding-top:25px;
+.proof-area{
+  padding:28px 30px;
 }
 
 .proof-heading{
-  font-size:9px;
-  color:#555;
-  letter-spacing:3px;
-  margin-bottom:15px;
+  font-size:10px;
+  letter-spacing:.2em;
+  margin-bottom:8px;
 }
 
-.note-area{
+.required{
+  color:#aaa;
+  font-size:9px;
+  letter-spacing:.15em;
+  margin-bottom:20px;
+}
+
+.upload-box{
+  border:1px dashed #444;
+  min-height:150px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  cursor:pointer;
+  transition:.25s;
+  overflow:hidden;
+}
+
+.upload-box:hover{
+  border-color:#888;
+  background:rgba(255,255,255,.025);
+}
+
+.upload-box input{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
   width:100%;
-  min-height:130px;
+  height:100%;
+}
+
+.upload-placeholder{
+  text-align:center;
+  color:#666;
+  pointer-events:none;
+}
+
+.upload-placeholder strong{
+  display:block;
+  color:#aaa;
+  font-size:11px;
+  letter-spacing:.15em;
+  margin-bottom:8px;
+}
+
+.upload-placeholder span{
+  font-size:10px;
+}
+
+#imagePreview{
+  display:none;
+  width:100%;
+  max-height:300px;
+  object-fit:contain;
+}
+
+.note-label{
+  display:block;
+  margin-top:22px;
+  margin-bottom:8px;
+  color:#666;
+  font-size:9px;
+  letter-spacing:.18em;
+}
+
+#missionNote{
+  width:100%;
+  min-height:100px;
   resize:vertical;
   background:#080808;
-  border:1px solid rgba(255,255,255,.1);
-  color:#eee;
+  border:1px solid #222;
+  color:white;
   padding:15px;
   outline:none;
-  font-size:13px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
   line-height:1.6;
 }
 
-.note-area:focus{
-  border-color:rgba(255,255,255,.35);
-}
-
-.proof-actions{
-  display:flex;
-  gap:8px;
-  margin-top:10px;
-  flex-wrap:wrap;
-}
-
-.proof-btn{
-  background:#181818;
-  color:#ccc;
-  border:1px solid rgba(255,255,255,.12);
-  padding:11px 15px;
-  font-size:9px;
-  letter-spacing:2px;
-}
-
-.proof-btn:hover{
-  border-color:#aaa;
-  color:#fff;
+#missionNote:focus{
+  border-color:#555;
 }
 
 .proof-status{
   margin-top:15px;
-  color:#666;
-  font-size:9px;
-  letter-spacing:2px;
+  font-size:10px;
+  color:#555;
+  font-family:monospace;
 }
 
-.image-preview{
-  margin-top:15px;
-  display:none;
-}
-
-.image-preview.show{
-  display:block;
-}
-
-.image-preview img{
-  display:block;
-  max-width:100%;
-  max-height:280px;
-  object-fit:contain;
-  border:1px solid rgba(255,255,255,.12);
+.proof-status.ready{
+  color:var(--accent);
 }
 
 .modal-actions{
-  margin-top:30px;
-  padding-top:20px;
-  border-top:1px solid rgba(255,255,255,.08);
+  padding:20px 30px 30px;
+  border-top:1px solid var(--line);
   display:flex;
   gap:10px;
 }
 
-.complete-btn{
+.complete-btn,
+.close-btn{
   flex:1;
-  background:#f4f1eb;
-  color:#080808;
-  border:none;
-  padding:16px;
+  padding:15px;
+  cursor:pointer;
   font-size:10px;
-  letter-spacing:2px;
-  font-weight:bold;
+  letter-spacing:.15em;
+  transition:.25s;
 }
 
-.modal-close-btn{
-  background:#181818;
-  color:#aaa;
-  border:1px solid rgba(255,255,255,.1);
-  padding:16px 22px;
-  font-size:10px;
-  letter-spacing:2px;
+.complete-btn{
+  background:white;
+  color:black;
+  border:1px solid white;
+}
+
+.complete-btn:hover:not(:disabled){
+  transform:translateY(-2px);
+}
+
+.complete-btn:disabled{
+  opacity:.3;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.close-btn{
+  background:none;
+  color:#888;
+  border:1px solid #333;
+}
+
+.close-btn:hover{
+  color:white;
+  border-color:#777;
 }
 
 /* =========================
    TOAST
 ========================= */
 
-.toast{
+#toast{
   position:fixed;
-  bottom:25px;
+  z-index:500;
   left:50%;
-  transform:translate(-50%,20px);
-  background:#eee;
-  color:#080808;
-  padding:14px 20px;
+  bottom:30px;
+  transform:translate(-50%,30px);
+  background:white;
+  color:black;
+  padding:13px 20px;
   font-size:10px;
-  letter-spacing:2px;
-  z-index:100;
+  letter-spacing:.12em;
   opacity:0;
   pointer-events:none;
   transition:.3s;
+  white-space:nowrap;
 }
 
-.toast.show{
+#toast.show{
   opacity:1;
   transform:translate(-50%,0);
 }
@@ -903,22 +911,22 @@ body::after{
    FLASH
 ========================= */
 
-.flash{
+#flash{
   position:fixed;
   inset:0;
   background:white;
   opacity:0;
   pointer-events:none;
-  z-index:200;
+  z-index:600;
 }
 
-.flash.active{
+#flash.active{
   animation:flash .5s ease;
 }
 
 @keyframes flash{
   0%{opacity:0}
-  30%{opacity:.8}
+  15%{opacity:.7}
   100%{opacity:0}
 }
 
@@ -928,56 +936,53 @@ body::after{
 
 @media(max-width:700px){
 
-  .header-inner{
-    padding:15px;
+  .topbar{
+    padding:0 20px;
   }
 
-  .logo{
-    font-size:11px;
+  .top-stats{
+    gap:10px;
   }
 
-  .xp-box{
+  .status-btn{
     display:none;
   }
 
-  .month-nav{
-    padding:15px;
-  }
-
   .world{
-    padding:45px 17px 80px;
+    padding:50px 20px 80px;
   }
 
-  .world-title{
-    font-size:70px;
+  .world-header{
+    grid-template-columns:1fr;
+    gap:25px;
+  }
+
+  .world-achievement{
+    text-align:left;
   }
 
   .mission-grid{
     grid-template-columns:1fr;
   }
 
-  .side-grid{
-    grid-template-columns:1fr;
+  .mission-card{
+    min-height:270px;
   }
 
-  .briefing-grid{
+  .extra-sections{
     grid-template-columns:1fr;
-  }
-
-  .modal{
-    padding:25px;
   }
 
   .modal-title{
-    font-size:27px;
+    font-size:29px;
   }
 
   .modal-actions{
     flex-direction:column;
   }
 
-  .intro-name{
-    letter-spacing:7px;
+  .intro-number{
+    font-size:180px;
   }
 }
 </style>
@@ -990,9 +995,11 @@ body::after{
 ========================= -->
 
 <section id="intro">
+
   <div class="intro-glow"></div>
 
   <div class="intro-content">
+
     <div class="intro-number">20</div>
 
     <div class="intro-kicker">
@@ -1010,7 +1017,9 @@ body::after{
     <button class="enter-btn" onclick="openBriefing()">
       ENTER LEVEL 20
     </button>
+
   </div>
+
 </section>
 
 
@@ -1022,67 +1031,55 @@ body::after{
 
   <div class="briefing-inner">
 
-    <div class="briefing-small">
-      PLAYER BRIEFING // SAMKU
+    <div class="briefing-label">
+      PLAYER BRIEFING // 001
     </div>
 
     <h1 class="briefing-title">
       WELCOME,<br>
-      SAMKU.
+      <span>SAMKU.</span>
     </h1>
 
-    <p class="briefing-copy">
+    <p class="briefing-text">
       This isn't a task list.
-      It isn't a productivity app.
-      And it definitely isn't another birthday card.
-      <br><br>
-
-      This is your twentieth year.
-      Twelve months. Forty-eight main missions.
-      Side quests. Random events. Secret files.
-      Things you will discover when you're not looking for them.
-      <br><br>
-
-      Some missions will be ridiculous.
-      Some will actually challenge you.
-      Some may involve Mahek.
-      Quite a few probably will.
+      It's your twentieth year turned into a game.
+      Every month opens a different world.
+      Some missions will be obvious.
+      Some won't.
+      Some things are meant to find you.
     </p>
 
-    <div class="briefing-grid">
+    <div class="rules">
 
-      <div class="briefing-card">
-        <span>01 // MISSIONS</span>
-        <strong>
-          Four main missions appear every month.
-        </strong>
+      <div class="rule">
+        <span class="rule-number">01</span>
+        <span>Complete missions to earn XP.</span>
       </div>
 
-      <div class="briefing-card">
-        <span>02 // XP</span>
-        <strong>
-          Complete things. Earn XP. Level up.
-        </strong>
+      <div class="rule">
+        <span class="rule-number">02</span>
+        <span>Every mission requires photographic proof.</span>
       </div>
 
-      <div class="briefing-card">
-        <span>03 // HIDDEN</span>
-        <strong>
-          Some things are meant to find you.
-        </strong>
+      <div class="rule">
+        <span class="rule-number">03</span>
+        <span>Side quests and secrets may appear when you least expect them.</span>
       </div>
 
-      <div class="briefing-card">
-        <span>04 // WARNING</span>
-        <strong>
-          Mahek is probably hiding something.
-        </strong>
+      <div class="rule">
+        <span class="rule-number">04</span>
+        <span>New months unlock as the year progresses.</span>
+      </div>
+
+      <div class="rule">
+        <span class="rule-number">05</span>
+        <span>Mahek is probably hiding something.</span>
       </div>
 
     </div>
 
     <button class="begin-btn" onclick="beginGame()">
-      BEGIN OCTOBER
+      BEGIN OCTOBER →
     </button>
 
   </div>
@@ -1094,27 +1091,23 @@ body::after{
      APP
 ========================= -->
 
-<main id="app" class="hidden">
+<section id="app" class="hidden">
 
-  <header class="app-header">
+  <header class="topbar">
 
-    <div class="header-inner">
+    <div class="logo">
+      LEVEL 20
+    </div>
 
-      <div class="logo">
-        LEVEL 20
+    <div class="top-stats">
+
+      <div class="xp-display">
+        XP <span id="xpValue">0</span>
       </div>
 
-      <div class="header-right">
-
-        <div class="xp-box">
-          XP <span id="xpDisplay">0</span>
-        </div>
-
-        <button class="status-btn" onclick="showStats()">
-          STATUS
-        </button>
-
-      </div>
+      <button class="status-btn" onclick="showStats()">
+        STATUS
+      </button>
 
     </div>
 
@@ -1124,704 +1117,84 @@ body::after{
   <nav class="month-nav" id="monthNav"></nav>
 
 
-  <!-- =========================
-       WORLDS
-  ========================= -->
+  <main id="worldContainer"></main>
 
-  <section class="world october active" id="world-october">
-    <div class="world-inner">
-
-      <div class="world-label">OCTOBER // 01</div>
-      <h1 class="world-title">THE<br>GAME</h1>
-
-      <p class="world-subtitle">
-        Your twentieth year begins like a game.
-        Four missions. One new level.
-        And absolutely no tutorial after this.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-october">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-october"></div>
-        </div>
-      </div>
-
-      <div class="section-title">MAIN MISSIONS</div>
-      <div class="mission-grid" id="missions-october"></div>
-
-      <div class="section-title">SIDE QUESTS</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>THE BRAND TEST</strong>
-          <span>Spot something branded that you'd actually spend money on.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>NO SUN DLC</strong>
-          <span>Survive one unnecessarily sunny day without complaining.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>HATHI MODE</strong>
-          <span>Do something so stubbornly you that Mahek immediately knows.</span>
-        </div>
-
-      </div>
-
-      <div class="discovery-box">
-        <div class="discovery-label">CLASSIFIED</div>
-        <div class="discovery-title">
-          Something is hidden here.
-        </div>
-        <div class="discovery-copy">
-          Don't worry about finding it.
-          If you're supposed to discover it, you will.
-        </div>
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>LEVEL 20 UNLOCKED</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world november" id="world-november">
-    <div class="world-inner">
-
-      <div class="world-label">NOVEMBER // 02</div>
-      <h1 class="world-title">CASE<br>FILE</h1>
-
-      <p class="world-subtitle">
-        November is classified.
-        Everyone is suspicious.
-        Especially the friend group.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-november">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-november"></div>
-        </div>
-      </div>
-
-      <div class="section-title">CASE FILES</div>
-      <div class="mission-grid" id="missions-november"></div>
-
-      <div class="section-title">SIDE QUESTS</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>SUSPICIOUS BEHAVIOUR</strong>
-          <span>Document something your friend group does that makes absolutely no sense.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>CLASSIFIED OBJECT</strong>
-          <span>Find an object with an unnecessarily interesting backstory.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>AGENT SAMKU</strong>
-          <span>Give Mahek one piece of information she doesn't already know.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>FIELD AGENT</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world december" id="world-december">
-    <div class="world-inner">
-
-      <div class="world-label">DECEMBER // 03</div>
-      <h1 class="world-title">THE<br>FRONT PAGE</h1>
-
-      <p class="world-subtitle">
-        December becomes a newspaper.
-        You are the headline.
-        The friend group is the breaking news.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-december">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-december"></div>
-        </div>
-      </div>
-
-      <div class="section-title">TODAY'S HEADLINES</div>
-      <div class="mission-grid" id="missions-december"></div>
-
-      <div class="section-title">SIDE STORIES</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>FAKE NEWS</strong>
-          <span>Write a ridiculous headline about your friend group.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>GOOD NEWS</strong>
-          <span>Find one genuinely good thing that happened this month.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>EDITOR'S NOTE</strong>
-          <span>Write something future Samkit should know.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>FRONT PAGE</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world january" id="world-january">
-    <div class="world-inner">
-
-      <div class="world-label">JANUARY // 04</div>
-      <h1 class="world-title">SYSTEM<br>UPDATE</h1>
-
-      <p class="world-subtitle">
-        New year. New version.
-        Same Samkit.
-        Several potential upgrades.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-january">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-january"></div>
-        </div>
-      </div>
-
-      <div class="section-title">UPDATE LOG</div>
-      <div class="mission-grid" id="missions-january"></div>
-
-      <div class="section-title">OPTIONAL PATCHES</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>SCREEN TIME PATCH</strong>
-          <span>Do something without automatically reaching for your phone.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>CONFIDENCE PATCH</strong>
-          <span>Do one thing you normally hesitate to do.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>LANGUAGE DLC</strong>
-          <span>Learn one new word and use it correctly.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>SYSTEM UPDATED</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world february" id="world-february">
-    <div class="world-inner">
-
-      <div class="world-label">FEBRUARY // 05</div>
-      <h1 class="world-title">CO-OP<br>MODE</h1>
-
-      <p class="world-subtitle">
-        Two players.
-        No "you decide."
-        No escaping.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-february">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-february"></div>
-        </div>
-      </div>
-
-      <div class="section-title">CO-OP MISSIONS</div>
-      <div class="mission-grid" id="missions-february"></div>
-
-      <div class="section-title">BONUS MODE</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>NO "YOU DECIDE"</strong>
-          <span>Choose something together in under 60 seconds.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>TRUCE</strong>
-          <span>One full conversation without teasing.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>CHAOS DUO</strong>
-          <span>Try something neither of you has done before.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>CO-OP UNLOCKED</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world march" id="world-march">
-    <div class="world-inner">
-
-      <div class="world-label">MARCH // 06</div>
-      <h1 class="world-title">OFF<br>THE MAP</h1>
-
-      <p class="world-subtitle">
-        March is for getting out.
-        New places. New food.
-        One hour without a perfect plan.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-march">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-march"></div>
-        </div>
-      </div>
-
-      <div class="section-title">TRAVEL FILES</div>
-      <div class="mission-grid" id="missions-march"></div>
-
-      <div class="section-title">EXTRA STOPS</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>WRONG TURN</strong>
-          <span>Take a route you've never taken before.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>LOCAL FIND</strong>
-          <span>Find something interesting in your own city.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>WINDOW SEAT</strong>
-          <span>Take a photo of somewhere you'd return to.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>EXPLORER</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world april" id="world-april">
-    <div class="world-inner">
-
-      <div class="world-label">APRIL // 07</div>
-      <h1 class="world-title">SURVIVAL<br>GUIDE</h1>
-
-      <p class="world-subtitle">
-        April asks one question:
-        how much fun can you have when everything isn't perfectly planned?
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-april">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-april"></div>
-        </div>
-      </div>
-
-      <div class="section-title">FIELD MISSIONS</div>
-      <div class="mission-grid" id="missions-april"></div>
-
-      <div class="section-title">SURVIVAL TIPS</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>NO ROUTINE</strong>
-          <span>Break one tiny part of your usual routine.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>UNPLANNED</strong>
-          <span>Say yes to one harmless spontaneous idea.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>OBSERVE</strong>
-          <span>Notice something you normally walk past.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>SURVIVOR</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world may" id="world-may">
-    <div class="world-inner">
-
-      <div class="world-label">MAY // 08</div>
-      <h1 class="world-title">CEO<br>MODE</h1>
-
-      <p class="world-subtitle">
-        Business brain activated.
-        ₹10,000.
-        One idea.
-        Let's see what happens.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-may">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-may"></div>
-        </div>
-      </div>
-
-      <div class="section-title">BOARDROOM</div>
-      <div class="mission-grid" id="missions-may"></div>
-
-      <div class="section-title">EXECUTIVE ORDERS</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>PRICE IT</strong>
-          <span>Find something you could sell and decide its price.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>BRAND WATCH</strong>
-          <span>Spot one brand doing something clever.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>CEO WALK</strong>
-          <span>Go somewhere and pretend you're scouting your next business.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>CEO MODE</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world june" id="world-june">
-    <div class="world-inner">
-
-      <div class="world-label">JUNE // 09</div>
-      <h1 class="world-title">CHAOS<br>MODE</h1>
-
-      <p class="world-subtitle">
-        Logic has temporarily left the server.
-        Please proceed.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-june">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-june"></div>
-        </div>
-      </div>
-
-      <div class="section-title">CHAOS MISSIONS</div>
-      <div class="mission-grid" id="missions-june"></div>
-
-      <div class="section-title">RANDOM EVENTS</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>BAD IDEA</strong>
-          <span>Do one harmless thing that sounds like a terrible idea.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>COIN FLIP</strong>
-          <span>Let chance decide one tiny decision.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>UNEXPECTED</strong>
-          <span>Do something Mahek would not expect from you.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>CHAOS COORDINATOR</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world july" id="world-july">
-    <div class="world-inner">
-
-      <div class="world-label">JULY // 10</div>
-      <h1 class="world-title">ARCHIVE<br>10</h1>
-
-      <p class="world-subtitle">
-        Somewhere inside you is a ten-year-old
-        who still has opinions about what you're doing.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-july">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-july"></div>
-        </div>
-      </div>
-
-      <div class="section-title">CHILDHOOD FILES</div>
-      <div class="mission-grid" id="missions-july"></div>
-
-      <div class="section-title">OLD SAVE FILES</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>OLD SONG</strong>
-          <span>Listen to something you loved years ago.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>OLD PHOTO</strong>
-          <span>Find a childhood photo that still makes you laugh.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>OLD DREAM</strong>
-          <span>Remember one thing you once wanted to become.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>NOSTALGIA UNLOCKED</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world august" id="world-august">
-    <div class="world-inner">
-
-      <div class="world-label">AUGUST // 11</div>
-      <h1 class="world-title">BOSS<br>BATTLE</h1>
-
-      <p class="world-subtitle">
-        This month isn't about easy missions.
-        Choose something you've been avoiding.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-august">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-august"></div>
-        </div>
-      </div>
-
-      <div class="section-title">BOSS PHASES</div>
-      <div class="mission-grid" id="missions-august"></div>
-
-      <div class="section-title">SECRET PHASE</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>NO EXCUSES</strong>
-          <span>Finish one tiny thing you've been postponing.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>HARD MODE</strong>
-          <span>Choose the slightly harder version of something.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>FINAL HIT</strong>
-          <span>Do something unexpectedly thoughtful.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>ACHIEVEMENT</small>
-        <h3>BOSS DEFEATED</h3>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="world september" id="world-september">
-    <div class="world-inner">
-
-      <div class="world-label">SEPTEMBER // 12</div>
-      <h1 class="world-title">THE<br>FINALE</h1>
-
-      <p class="world-subtitle">
-        One year.
-        Twelve worlds.
-        Forty-eight missions.
-        And a version of Samkit that didn't exist twelve months ago.
-      </p>
-
-      <div class="world-progress">
-        <span id="progress-september">0 / 4</span>
-        <div class="progress-line">
-          <div class="progress-fill" id="fill-september"></div>
-        </div>
-      </div>
-
-      <div class="section-title">FINAL ARCHIVE</div>
-      <div class="mission-grid" id="missions-september"></div>
-
-      <div class="section-title">POST-CREDITS</div>
-      <div class="side-grid">
-
-        <div class="side-card">
-          <strong>ONE MORE PHOTO</strong>
-          <span>Take one photo that sums up the entire year.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>ONE MORE MEMORY</strong>
-          <span>Remember something you almost forgot.</span>
-        </div>
-
-        <div class="side-card">
-          <strong>LEVEL 21</strong>
-          <span>Think about what the next level should look like.</span>
-        </div>
-
-      </div>
-
-      <div class="achievement">
-        <small>FINAL ACHIEVEMENT</small>
-        <h3>LEVEL 20 COMPLETE</h3>
-      </div>
-
-    </div>
-  </section>
-
-</main>
+</section>
 
 
 <!-- =========================
-     MISSION MODAL
+     MODAL
 ========================= -->
 
-<div class="modal-backdrop" id="missionModal">
+<div class="modal-overlay" id="missionModal">
 
   <div class="modal">
 
     <div class="modal-top">
 
-      <div>
-        <div class="modal-number" id="modalNumber">
-          MISSION 01
-        </div>
-
-        <h2 class="modal-title" id="modalTitle">
-          Mission
-        </h2>
+      <div class="modal-number" id="modalNumber">
+        MISSION 01
       </div>
 
-      <button class="close-x" onclick="closeModal()">
-        ×
-      </button>
+      <div class="modal-title" id="modalTitle">
+        MISSION
+      </div>
+
+      <div class="modal-desc" id="modalDesc">
+        Description
+      </div>
 
     </div>
 
-    <p class="modal-description" id="modalDescription"></p>
 
-
-    <!-- PROOF AREA -->
-
-    <div class="proof-section">
+    <div class="proof-area">
 
       <div class="proof-heading">
-        YOUR PROOF
+        MISSION PROOF
       </div>
 
-      <textarea
-        id="missionNote"
-        class="note-area"
-        placeholder="Write something about what happened..."></textarea>
+      <div class="required">
+        IMAGE REQUIRED TO MARK THIS MISSION COMPLETE
+      </div>
 
-      <div class="proof-actions">
 
-        <button
-          class="proof-btn"
-          onclick="saveMissionNote()">
-          SAVE NOTE
-        </button>
-
-        <button
-          class="proof-btn"
-          onclick="document.getElementById('missionImage').click()">
-          ADD IMAGE
-        </button>
+      <label class="upload-box">
 
         <input
           type="file"
           id="missionImage"
           accept="image/*"
-          style="display:none"
-          onchange="saveMissionImage(event)">
+          onchange="saveMissionImage(event)"
+        >
 
-      </div>
+        <div class="upload-placeholder" id="uploadPlaceholder">
+
+          <strong>+ ADD IMAGE</strong>
+
+          <span>
+            Upload a photo proving you completed this mission
+          </span>
+
+        </div>
+
+        <img id="imagePreview" alt="Mission proof">
+
+      </label>
+
+
+      <label class="note-label">
+        OPTIONAL NOTE
+      </label>
+
+      <textarea
+        id="missionNote"
+        placeholder="Write something about what happened..."
+        oninput="saveMissionNote()"
+      ></textarea>
+
 
       <div class="proof-status" id="proofStatus">
-        NO PROOF ATTACHED
-      </div>
-
-      <div class="image-preview" id="imagePreview">
-        <img id="previewImage" alt="Mission proof">
+        NO IMAGE UPLOADED
       </div>
 
     </div>
@@ -1832,13 +1205,16 @@ body::after{
       <button
         class="complete-btn"
         id="completeButton"
-        onclick="completeCurrentMission()">
-        MARK AS DONE +XP
+        onclick="completeCurrentMission()"
+        disabled
+      >
+        UPLOAD IMAGE TO UNLOCK
       </button>
 
       <button
-        class="modal-close-btn"
-        onclick="closeModal()">
+        class="close-btn"
+        onclick="closeModal()"
+      >
         CLOSE
       </button>
 
@@ -1849,380 +1225,500 @@ body::after{
 </div>
 
 
-<div class="toast" id="toast"></div>
+<div id="toast"></div>
 
-<div class="flash" id="flash"></div>
+<div id="flash"></div>
 
 
 <script>
 
 /* =========================================================
-   MISSION DATA
+   DATA
 ========================================================= */
 
-const months = {
+const months = [
 
-  october:{
-    name:"OCT",
-    missions:[
-      {
-        title:"THE SPICE TEST",
-        description:"Eat something properly spicy. Capture the aftermath.",
-        xp:100,
-        type:"photo"
-      },
-      {
-        title:"VALORANT IRL",
-        description:"Explain one Valorant concept to Mahek without using gaming jargon.",
-        xp:200,
-        type:"video"
-      },
-      {
-        title:"ROYAL ENFIELD",
-        description:"Pick the Royal Enfield you would actually buy.",
-        xp:150,
-        type:"choice"
-      },
-      {
-        title:"APPRECIATION GLITCH",
-        description:"Do one unexpectedly sweet thing for Mahek without being asked.",
-        xp:500,
-        type:"memory"
-      }
-    ]
-  },
+{
+  id:"oct",
+  name:"OCT",
+  full:"OCTOBER",
+  world:"world-oct",
+  subtitle:"The year begins quietly. Four missions. A few suspicious files. Don't assume you've seen everything.",
+  achievement:"LEVEL 20 UNLOCKED",
+  side:[
+    "Find something that feels extremely Samkit.",
+    "Make Mahek laugh without trying.",
+    "Do something completely unnecessary but fun."
+  ],
+  missions:[
+    {
+      title:"THE SPICE TEST",
+      desc:"Eat something properly spicy. Capture the aftermath.",
+      type:"PHOTO",
+      xp:100
+    },
+    {
+      title:"VALORANT IRL",
+      desc:"Explain one Valorant concept to Mahek without using gaming jargon.",
+      type:"VIDEO",
+      xp:200
+    },
+    {
+      title:"ROYAL ENFIELD",
+      desc:"Pick the Royal Enfield you would actually buy.",
+      type:"CHOICE",
+      xp:150
+    },
+    {
+      title:"APPRECIATION GLITCH",
+      desc:"Do one unexpectedly sweet thing for Mahek without being asked.",
+      type:"MEMORY",
+      xp:500
+    }
+  ]
+},
 
-  november:{
-    name:"NOV",
-    missions:[
-      {
-        title:"FRIEND GROUP FILE",
-        description:"Turn the friend group into a ridiculous crime case.",
-        xp:150,
-        type:"photo"
-      },
-      {
-        title:"SECOND-HAND INCIDENT",
-        description:"Find a second-hand thing you would genuinely consider owning.",
-        xp:150,
-        type:"photo"
-      },
-      {
-        title:"MEETHALI FILE",
-        description:"Give Meethali the full documentary treatment in a dramatic 30-second explanation.",
-        xp:100,
-        type:"video"
-      },
-      {
-        title:"YUKTA // CLASSIFIED",
-        description:"Present your official theory about the Yukta file.",
-        xp:250,
-        type:"choice"
-      }
-    ]
-  },
+{
+  id:"nov",
+  name:"NOV",
+  full:"NOVEMBER",
+  world:"world-nov",
+  subtitle:"CLASSIFIED // Something happened. Nobody is entirely sure what.",
+  achievement:"FIELD AGENT",
+  side:[
+    "Investigate an unnecessary mystery.",
+    "Find an object with a suspicious backstory.",
+    "Ask someone for a completely useless piece of information."
+  ],
+  missions:[
+    {
+      title:"FRIEND GROUP FILE",
+      desc:"Turn your friend group into a ridiculous crime case.",
+      type:"PHOTO",
+      xp:150
+    },
+    {
+      title:"SECOND-HAND INCIDENT",
+      desc:"Find a second-hand thing you would genuinely consider owning.",
+      type:"PHOTO",
+      xp:150
+    },
+    {
+      title:"MEETHALI FILE",
+      desc:"Create a dramatic 30-second documentary explanation of Meethali.",
+      type:"VIDEO",
+      xp:100
+    },
+    {
+      title:"YUKTA // CLASSIFIED",
+      desc:"Submit your official theory about the Yukta file.",
+      type:"CHOICE",
+      xp:250
+    }
+  ]
+},
 
-  december:{
-    name:"DEC",
-    missions:[
-      {
-        title:"HEADLINE",
-        description:"Write the headline you want next year to be true.",
-        xp:150,
-        type:"text"
-      },
-      {
-        title:"BREAKING NEWS",
-        description:"Document one genuinely good thing from this month.",
-        xp:100,
-        type:"photo"
-      },
-      {
-        title:"WANTED: APPRECIATION",
-        description:"Do something thoughtful without expecting anything back.",
-        xp:250,
-        type:"memory"
-      },
-      {
-        title:"EDITORIAL",
-        description:"Create the funniest fake headline about the friend group.",
-        xp:100,
-        type:"text"
-      }
-    ]
-  },
+{
+  id:"dec",
+  name:"DEC",
+  full:"DECEMBER",
+  world:"world-dec",
+  subtitle:"THE DAILY SAMKIT // December edition. Headlines, scandals and extremely questionable journalism.",
+  achievement:"FRONT PAGE",
+  side:[
+    "Invent a headline about your own life.",
+    "Report breaking news to Mahek.",
+    "Create a fake newspaper story about your friends."
+  ],
+  missions:[
+    {
+      title:"HEADLINE",
+      desc:"Write a headline you want next year to be true.",
+      type:"TEXT",
+      xp:150
+    },
+    {
+      title:"BREAKING NEWS",
+      desc:"Document one genuinely good thing from this month.",
+      type:"PHOTO",
+      xp:100
+    },
+    {
+      title:"WANTED: APPRECIATION",
+      desc:"Do something thoughtful without expecting anything back.",
+      type:"MEMORY",
+      xp:250
+    },
+    {
+      title:"EDITORIAL",
+      desc:"Create the funniest fake headline about your friend group.",
+      type:"TEXT",
+      xp:100
+    }
+  ]
+},
 
-  january:{
-    name:"JAN",
-    missions:[
-      {
-        title:"BODY UPGRADE",
-        description:"Choose a realistic physical upgrade and actually begin.",
-        xp:150,
-        type:"photo"
-      },
-      {
-        title:"BRAIN UPGRADE",
-        description:"Learn one thing deeply enough to explain it.",
-        xp:200,
-        type:"video"
-      },
-      {
-        title:"LIFE UPGRADE",
-        description:"Try something you have never done before.",
-        xp:200,
-        type:"photo"
-      },
-      {
-        title:"BUG FIX",
-        description:"Fix one tiny habit you've been meaning to fix.",
-        xp:150,
-        type:"text"
-      }
-    ]
-  },
+{
+  id:"jan",
+  name:"JAN",
+  full:"JANUARY",
+  world:"world-jan",
+  subtitle:"SYSTEM UPDATE AVAILABLE. Human.exe requires several upgrades.",
+  achievement:"SYSTEM UPDATED",
+  side:[
+    "Delete one useless habit.",
+    "Learn one completely random fact.",
+    "Try a new routine for three days."
+  ],
+  missions:[
+    {
+      title:"BODY UPGRADE",
+      desc:"Choose a realistic physical upgrade and actually begin.",
+      type:"PHOTO",
+      xp:150
+    },
+    {
+      title:"BRAIN UPGRADE",
+      desc:"Learn one thing deeply enough to explain it.",
+      type:"VIDEO",
+      xp:200
+    },
+    {
+      title:"LIFE UPGRADE",
+      desc:"Try something you've never done before.",
+      type:"PHOTO",
+      xp:200
+    },
+    {
+      title:"BUG FIX",
+      desc:"Fix one tiny habit that has been annoying you.",
+      type:"TEXT",
+      xp:150
+    }
+  ]
+},
 
-  february:{
-    name:"FEB",
-    missions:[
-      {
-        title:"NO 'YOU DECIDE' DATE",
-        description:"Plan a date where neither person is allowed to say 'you decide'.",
-        xp:250,
-        type:"photo"
-      },
-      {
-        title:"JEALOUSY PATCH",
-        description:"Replace one teasing-jealousy moment with something that makes Mahek laugh.",
-        xp:200,
-        type:"video"
-      },
-      {
-        title:"APPRECIATION REBOOT",
-        description:"Write three specific things you appreciate about Mahek.",
-        xp:300,
-        type:"text"
-      },
-      {
-        title:"CO-OP SIDE QUEST",
-        description:"Do something together that neither of you has done before.",
-        xp:300,
-        type:"memory"
-      }
-    ]
-  },
+{
+  id:"feb",
+  name:"FEB",
+  full:"FEBRUARY",
+  world:"world-feb",
+  subtitle:"CO-OP MODE ENABLED. This month is suspiciously difficult to complete alone.",
+  achievement:"CO-OP UNLOCKED",
+  side:[
+    "Make Mahek laugh on purpose.",
+    "Do something together without planning it.",
+    "Create one inside joke."
+  ],
+  missions:[
+    {
+      title:"NO 'YOU DECIDE' DATE",
+      desc:"Plan a date where neither person is allowed to say 'you decide'.",
+      type:"PHOTO",
+      xp:250
+    },
+    {
+      title:"JEALOUSY PATCH",
+      desc:"Replace one teasing-jealousy moment with something that makes Mahek laugh.",
+      type:"VIDEO",
+      xp:200
+    },
+    {
+      title:"APPRECIATION REBOOT",
+      desc:"Write three specific things you appreciate about Mahek.",
+      type:"TEXT",
+      xp:300
+    },
+    {
+      title:"CO-OP SIDE QUEST",
+      desc:"Do something together that neither of you has done before.",
+      type:"MEMORY",
+      xp:300
+    }
+  ]
+},
 
-  march:{
-    name:"MAR",
-    missions:[
-      {
-        title:"MINI ESCAPE",
-        description:"Go somewhere neither of you has explored.",
-        xp:250,
-        type:"photo"
-      },
-      {
-        title:"TRAVEL FILE",
-        description:"Document the best food, weirdest thing and best moment.",
-        xp:150,
-        type:"photo"
-      },
-      {
-        title:"NO-PLAN HOUR",
-        description:"Spend one hour with no detailed plan.",
-        xp:200,
-        type:"video"
-      },
-      {
-        title:"POSTCARD FROM NOWHERE",
-        description:"Write one sentence you want to remember from this month.",
-        xp:100,
-        type:"text"
-      }
-    ]
-  },
+{
+  id:"mar",
+  name:"MAR",
+  full:"MARCH",
+  world:"world-mar",
+  subtitle:"TRAVEL MODE. No destination is too small for an adventure.",
+  achievement:"EXPLORER",
+  side:[
+    "Find a place you've never noticed before.",
+    "Eat something from somewhere new.",
+    "Take the long way home."
+  ],
+  missions:[
+    {
+      title:"MINI ESCAPE",
+      desc:"Go somewhere neither of you has explored.",
+      type:"PHOTO",
+      xp:250
+    },
+    {
+      title:"TRAVEL FILE",
+      desc:"Record the best food, weirdest thing and best moment.",
+      type:"PHOTO",
+      xp:150
+    },
+    {
+      title:"NO-PLAN HOUR",
+      desc:"Spend one hour with absolutely no detailed plan.",
+      type:"VIDEO",
+      xp:200
+    },
+    {
+      title:"POSTCARD FROM NOWHERE",
+      desc:"Write one sentence you want to remember from this period.",
+      type:"TEXT",
+      xp:100
+    }
+  ]
+},
 
-  april:{
-    name:"APR",
-    missions:[
-      {
-        title:"SUNLIGHT DLC",
-        description:"Spend reasonable time outside doing something you enjoy.",
-        xp:100,
-        type:"photo"
-      },
-      {
-        title:"NEW FOOD",
-        description:"Order something you would normally never choose.",
-        xp:150,
-        type:"photo"
-      },
-      {
-        title:"OFF-SCREEN",
-        description:"Spend an evening without your usual entertainment routine.",
-        xp:200,
-        type:"memory"
-      },
-      {
-        title:"SURVIVAL REPORT",
-        description:"Write about something you unexpectedly enjoyed.",
-        xp:150,
-        type:"text"
-      }
-    ]
-  },
+{
+  id:"apr",
+  name:"APR",
+  full:"APRIL",
+  world:"world-apr",
+  subtitle:"FIELD GUIDE // The outdoors has been located. Proceed carefully.",
+  achievement:"SURVIVOR",
+  side:[
+    "Spend time somewhere outside your usual routine.",
+    "Try something you've always ignored.",
+    "Survive one mildly inconvenient day."
+  ],
+  missions:[
+    {
+      title:"SUNLIGHT DLC",
+      desc:"Spend reasonable time outside doing something you actually enjoy.",
+      type:"PHOTO",
+      xp:100
+    },
+    {
+      title:"NEW FOOD",
+      desc:"Order something you've never chosen before.",
+      type:"PHOTO",
+      xp:150
+    },
+    {
+      title:"OFF-SCREEN",
+      desc:"Spend an evening without your usual entertainment routine.",
+      type:"MEMORY",
+      xp:200
+    },
+    {
+      title:"SURVIVAL REPORT",
+      desc:"Write about something you unexpectedly enjoyed.",
+      type:"TEXT",
+      xp:150
+    }
+  ]
+},
 
-  may:{
-    name:"MAY",
-    missions:[
-      {
-        title:"₹10K PROBLEM",
-        description:"Build a tiny business idea with a ₹10,000 budget.",
-        xp:300,
-        type:"text"
-      },
-      {
-        title:"PITCH IT",
-        description:"Give Mahek a 60-second pitch for your idea.",
-        xp:200,
-        type:"video"
-      },
-      {
-        title:"NO DEGREE REQUIRED",
-        description:"Pick one skill you want to become excellent at without doing a Master's.",
-        xp:150,
-        type:"choice"
-      },
-      {
-        title:"BRAND DETECTOR",
-        description:"Find one branded thing that is genuinely worth the money.",
-        xp:100,
-        type:"photo"
-      }
-    ]
-  },
+{
+  id:"may",
+  name:"MAY",
+  full:"MAY",
+  world:"world-may",
+  subtitle:"EXECUTIVE TERMINAL // Your business empire currently consists of approximately zero companies.",
+  achievement:"CEO MODE",
+  side:[
+    "Invent a business nobody asked for.",
+    "Price something ridiculously.",
+    "Pitch an idea to someone."
+  ],
+  missions:[
+    {
+      title:"₹10K PROBLEM",
+      desc:"Build a tiny business idea with a ₹10,000 starting budget.",
+      type:"TEXT",
+      xp:300
+    },
+    {
+      title:"PITCH IT",
+      desc:"Give Mahek a 60-second pitch for your business idea.",
+      type:"VIDEO",
+      xp:200
+    },
+    {
+      title:"NO DEGREE REQUIRED",
+      desc:"Pick one skill you want to become excellent at without a Master's degree.",
+      type:"CHOICE",
+      xp:150
+    },
+    {
+      title:"BRAND DETECTOR",
+      desc:"Find one branded thing you genuinely think is worth the money.",
+      type:"PHOTO",
+      xp:100
+    }
+  ]
+},
 
-  june:{
-    name:"JUN",
-    missions:[
-      {
-        title:"WHEEL OF BAD IDEAS",
-        description:"Choose one random harmless challenge.",
-        xp:200,
-        type:"choice"
-      },
-      {
-        title:"DOUBLE OR NOTHING",
-        description:"Choose a previous-style challenge and double the XP if you finish it.",
-        xp:400,
-        type:"video"
-      },
-      {
-        title:"RANDOM FOOD",
-        description:"Order something unusual.",
-        xp:150,
-        type:"photo"
-      },
-      {
-        title:"CHAOS CALL",
-        description:"Call someone you have not spoken to in a while.",
-        xp:150,
-        type:"memory"
-      }
-    ]
-  },
+{
+  id:"jun",
+  name:"JUN",
+  full:"JUNE",
+  world:"world-jun",
+  subtitle:"CHAOS MODE. The system has stopped pretending to be organised.",
+  achievement:"CHAOS COORDINATOR",
+  side:[
+    "Make a random decision.",
+    "Do something mildly ridiculous.",
+    "Let chance choose something."
+  ],
+  missions:[
+    {
+      title:"WHEEL OF BAD IDEAS",
+      desc:"Choose a random harmless challenge and actually do it.",
+      type:"CHOICE",
+      xp:200
+    },
+    {
+      title:"DOUBLE OR NOTHING",
+      desc:"Choose a previous-style challenge and double the XP if you finish.",
+      type:"VIDEO",
+      xp:400
+    },
+    {
+      title:"RANDOM FOOD",
+      desc:"Order something unusual instead of your normal choice.",
+      type:"PHOTO",
+      xp:150
+    },
+    {
+      title:"CHAOS CALL",
+      desc:"Call someone you haven't spoken to in a while.",
+      type:"MEMORY",
+      xp:150
+    }
+  ]
+},
 
-  july:{
-    name:"JUL",
-    missions:[
-      {
-        title:"THE 10-YEAR-OLD",
-        description:"Do something your younger self would absolutely love.",
-        xp:200,
-        type:"photo"
-      },
-      {
-        title:"OLD FAVOURITE",
-        description:"Bring back a childhood favourite.",
-        xp:100,
-        type:"photo"
-      },
-      {
-        title:"MESSAGE TO 10",
-        description:"Tell younger Samkit something he needs to hear.",
-        xp:250,
-        type:"video"
-      },
-      {
-        title:"COOL ENOUGH?",
-        description:"Would ten-year-old Samkit think current you is cool?",
-        xp:150,
-        type:"text"
-      }
-    ]
-  },
+{
+  id:"jul",
+  name:"JUL",
+  full:"JULY",
+  world:"world-jul",
+  subtitle:"ARCHIVE RESTORED // Somewhere inside is the ten-year-old version of Samkit.",
+  achievement:"NOSTALGIA UNLOCKED",
+  side:[
+    "Find an old photograph.",
+    "Listen to something from childhood.",
+    "Tell Mahek a childhood story."
+  ],
+  missions:[
+    {
+      title:"THE 10-YEAR-OLD",
+      desc:"Do something your younger self would have absolutely loved.",
+      type:"PHOTO",
+      xp:200
+    },
+    {
+      title:"OLD FAVOURITE",
+      desc:"Eat, watch or play something you loved as a child.",
+      type:"PHOTO",
+      xp:100
+    },
+    {
+      title:"MESSAGE TO 10",
+      desc:"Tell your younger self something he needs to hear.",
+      type:"VIDEO",
+      xp:250
+    },
+    {
+      title:"COOL ENOUGH?",
+      desc:"Would ten-year-old Samkit think current Samkit is cool?",
+      type:"TEXT",
+      xp:150
+    }
+  ]
+},
 
-  august:{
-    name:"AUG",
-    missions:[
-      {
-        title:"THE HARD ONE",
-        description:"Do something you have been avoiding.",
-        xp:300,
-        type:"memory"
-      },
-      {
-        title:"THE PERSONAL ONE",
-        description:"Have the conversation you have been postponing.",
-        xp:300,
-        type:"memory"
-      },
-      {
-        title:"THE ADVENTURE ONE",
-        description:"Plan a memorable inexpensive day.",
-        xp:300,
-        type:"photo"
-      },
-      {
-        title:"SECRET BOSS",
-        description:"Do something thoughtful secretly.",
-        xp:500,
-        type:"memory"
-      }
-    ]
-  },
+{
+  id:"aug",
+  name:"AUG",
+  full:"AUGUST",
+  world:"world-aug",
+  subtitle:"BOSS BATTLE // There is one level you cannot skip.",
+  achievement:"BOSS DEFEATED",
+  side:[
+    "Do something you've been avoiding.",
+    "Have one difficult but honest conversation.",
+    "Plan something memorable."
+  ],
+  missions:[
+    {
+      title:"THE HARD ONE",
+      desc:"Do one thing you've been avoiding.",
+      type:"MEMORY",
+      xp:300
+    },
+    {
+      title:"THE PERSONAL ONE",
+      desc:"Have a conversation you've been postponing.",
+      type:"MEMORY",
+      xp:300
+    },
+    {
+      title:"THE ADVENTURE ONE",
+      desc:"Plan a memorable but inexpensive day.",
+      type:"PHOTO",
+      xp:300
+    },
+    {
+      title:"SECRET BOSS",
+      desc:"Do something thoughtful for someone without telling them beforehand.",
+      type:"MEMORY",
+      xp:500
+    }
+  ]
+},
 
-  september:{
-    name:"SEP",
-    missions:[
-      {
-        title:"YEAR IN 5 FRAMES",
-        description:"Use five photos to tell the story of your twentieth year.",
-        xp:250,
-        type:"photo"
-      },
-      {
-        title:"BEST FAILURE",
-        description:"Write about something that went wrong but taught you something.",
-        xp:200,
-        type:"text"
-      },
-      {
-        title:"THE NEXT LEVEL",
-        description:"Tell 21-year-old Samkit what he should remember.",
-        xp:250,
-        type:"video"
-      },
-      {
-        title:"FINAL CO-OP",
-        description:"Create one last memory with Mahek.",
-        xp:500,
-        type:"memory"
-      }
-    ]
-  }
+{
+  id:"sep",
+  name:"SEP",
+  full:"SEPTEMBER",
+  world:"world-sep",
+  subtitle:"FINAL ARCHIVE // The year is almost complete. Look back before you level up.",
+  achievement:"LEVEL 20 COMPLETE",
+  side:[
+    "Look through the year.",
+    "Choose one memory you never want to forget.",
+    "Imagine what Level 21 looks like."
+  ],
+  missions:[
+    {
+      title:"YEAR IN 5 FRAMES",
+      desc:"Choose five photos that tell the story of this year.",
+      type:"PHOTO",
+      xp:250
+    },
+    {
+      title:"BEST FAILURE",
+      desc:"Write about something that went wrong but taught you something.",
+      type:"TEXT",
+      xp:200
+    },
+    {
+      title:"THE NEXT LEVEL",
+      desc:"Record what 21-year-old Samkit should remember.",
+      type:"VIDEO",
+      xp:250
+    },
+    {
+      title:"FINAL CO-OP",
+      desc:"Create one last memory with Mahek.",
+      type:"MEMORY",
+      xp:500
+    }
+  ]
+}
 
-};
+];
 
 
 /* =========================================================
@@ -2230,29 +1726,43 @@ const months = {
 ========================================================= */
 
 let state = {
-  xp: Number(localStorage.getItem("level20_xp") || 0),
+  xp:Number(localStorage.getItem("level20_xp") || 0),
 
-  completed: JSON.parse(
+  completed:JSON.parse(
     localStorage.getItem("level20_completed") || "[]"
   ),
 
-  discoveries: JSON.parse(
+  discoveries:JSON.parse(
     localStorage.getItem("level20_discoveries") || "[]"
   ),
 
-  secret: Number(
+  secret:Number(
     localStorage.getItem("level20_secret") || 0
   ),
 
-  proofs: JSON.parse(
+  proofs:JSON.parse(
     localStorage.getItem("level20_proofs") || "{}"
   )
 };
 
-let currentMission = null;
-let currentMonth = "october";
 
-let toastTimer;
+/*
+  IMPORTANT:
+  If an old version marked a mission complete without
+  an image, it is automatically reopened.
+*/
+state.completed = state.completed.filter(key => {
+  return state.proofs[key] && state.proofs[key].image;
+});
+
+localStorage.setItem(
+  "level20_completed",
+  JSON.stringify(state.completed)
+);
+
+
+let currentMonth = 0;
+let currentMission = null;
 
 
 /* =========================================================
@@ -2261,11 +1771,10 @@ let toastTimer;
 
 function openBriefing(){
 
-  document.getElementById("intro").style.display="none";
+  document.getElementById("intro").style.display = "none";
 
   document.getElementById("briefing")
     .classList.remove("hidden");
-
 }
 
 
@@ -2278,46 +1787,80 @@ function beginGame(){
     .classList.remove("hidden");
 
   renderAll();
-
-  window.scrollTo({
-    top:0,
-    behavior:"instant"
-  });
 }
 
 
 /* =========================================================
-   MONTH NAV
+   UNLOCK LOGIC
 ========================================================= */
 
-function createMonthNav(){
+function isMonthUnlocked(index){
 
-  const nav =
-    document.getElementById("monthNav");
+  if(index === 0) return true;
 
-  nav.innerHTML="";
+  const previousMonth = months[index - 1];
 
-  Object.keys(months).forEach((month,index)=>{
+  const previousKeys = previousMonth.missions.map(
+    (_,i) => previousMonth.id + "-" + i
+  );
 
-    const button =
-      document.createElement("button");
+  return previousKeys.every(key =>
+    state.completed.includes(key)
+  );
+}
 
-    button.className="month-btn";
 
-    button.dataset.month=month;
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderAll(){
+
+  updateXP();
+  renderMonthNav();
+  renderWorld();
+}
+
+
+function updateXP(){
+
+  document.getElementById("xpValue").textContent =
+    state.xp;
+}
+
+
+function renderMonthNav(){
+
+  const nav = document.getElementById("monthNav");
+
+  nav.innerHTML = "";
+
+  months.forEach((month,index)=>{
+
+    const unlocked = isMonthUnlocked(index);
+
+    const button = document.createElement("button");
+
+    button.className =
+      "month-btn " +
+      (index === currentMonth ? "active " : "") +
+      (unlocked ? "unlocked" : "locked");
 
     button.textContent =
-      String(index+1).padStart(2,"0")+" "+
-      months[month].name;
+      unlocked ? month.name : "LOCKED";
 
-    button.onclick=()=>{
+    button.onclick = ()=>{
 
-      if(isMonthLocked(month)){
-        showToast("THIS LEVEL IS STILL LOCKED");
+      if(!unlocked){
+
+        showToast("COMPLETE THE PREVIOUS WORLD FIRST");
+
         return;
       }
 
-      showMonth(month);
+      currentMonth = index;
+
+      renderAll();
     };
 
     nav.appendChild(button);
@@ -2327,275 +1870,202 @@ function createMonthNav(){
 }
 
 
-function isMonthLocked(month){
+function renderWorld(){
 
-  const keys =
-    Object.keys(months);
+  const month = months[currentMonth];
 
-  const index =
-    keys.indexOf(month);
+  const container =
+    document.getElementById("worldContainer");
 
-  if(index===0){
-    return false;
-  }
+  let missionsHTML = "";
 
-  const previousMonth =
-    keys[index-1];
+  month.missions.forEach((mission,index)=>{
 
-  return getCompletedCount(previousMonth) < 4;
-}
+    const key =
+      month.id + "-" + index;
 
+    const completed =
+      state.completed.includes(key);
 
-function showMonth(month){
+    const proof =
+      state.proofs[key];
 
-  if(isMonthLocked(month)){
-    showToast("COMPLETE THE PREVIOUS WORLD FIRST");
-    return;
-  }
+    const hasProof =
+      proof && proof.image;
 
-  currentMonth=month;
+    missionsHTML += `
 
-  document.querySelectorAll(".world")
-    .forEach(world=>{
-      world.classList.remove("active");
-    });
+      <article
+        class="mission-card"
+        onclick="openMission(${currentMonth},${index})"
+      >
 
-  const target =
-    document.getElementById(
-      "world-"+month
-    );
+        <div class="mission-number">
+          0${index+1}
+        </div>
 
-  if(target){
-    target.classList.add("active");
-  }
+        <div class="mission-type">
+          ${mission.type}
+        </div>
 
-  document.querySelectorAll(".month-btn")
-    .forEach(button=>{
-      button.classList.toggle(
-        "active",
-        button.dataset.month===month
-      );
-    });
+        <div class="mission-title">
+          ${mission.title}
+        </div>
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
+        <div class="mission-desc">
+          ${mission.desc}
+        </div>
+
+        <div class="mission-bottom">
+
+          <div class="xp">
+            +${mission.xp} XP
+          </div>
+
+          <div class="mission-status
+            ${completed ? "complete" : ""}
+          ">
+
+            <span class="proof-dot
+              ${hasProof ? "has-proof" : ""}
+            "></span>
+
+            ${
+              completed
+                ? "COMPLETE"
+                : hasProof
+                  ? "PROOF READY"
+                  : "OPEN MISSION"
+            }
+
+          </div>
+
+        </div>
+
+      </article>
+    `;
   });
-}
 
 
-/* =========================================================
-   MISSION KEYS
-========================================================= */
+  const sideHTML =
+    month.side.map((item,index)=>`
 
-function missionKey(month,index){
+      <div class="side-quest">
 
-  return month+"-"+index;
+        <span>
+          SIDE QUEST ${index+1}
+        </span>
 
-}
+        <span>
+          ${item}
+        </span>
 
+      </div>
 
-function getCompletedCount(month){
-
-  return months[month].missions.filter(
-    (_,index)=>
-      state.completed.includes(
-        missionKey(month,index)
-      )
-  ).length;
-
-}
+    `).join("");
 
 
-function isMissionLocked(month,index){
-
-  if(index===0){
-    return false;
-  }
-
-  return !state.completed.includes(
-    missionKey(month,index-1)
-  );
-
-}
+  const discoveryCount =
+    state.discoveries.filter(
+      x => x.startsWith(month.id)
+    ).length;
 
 
-/* =========================================================
-   RENDER MISSIONS
-========================================================= */
+  container.innerHTML = `
 
-function renderAllMissions(){
+    <section class="world ${month.world}">
 
-  Object.keys(months).forEach(month=>{
+      <div class="world-content">
 
-    const container =
-      document.getElementById(
-        "missions-"+month
-      );
+        <div class="world-header">
 
-    if(!container){
-      return;
-    }
+          <div>
 
-    container.innerHTML="";
+            <div class="world-index">
+              WORLD ${String(currentMonth+1).padStart(2,"0")}
+              // ${month.full}
+            </div>
 
-    months[month].missions.forEach(
-      (mission,index)=>{
+            <h1 class="world-title">
+              ${month.full}
+            </h1>
 
-        const key =
-          missionKey(month,index);
+            <p class="world-subtitle">
+              ${month.subtitle}
+            </p>
 
-        const completed =
-          state.completed.includes(key);
-
-        const locked =
-          isMissionLocked(month,index);
-
-        const proof =
-          state.proofs[key] || {};
-
-        const card =
-          document.createElement("div");
-
-        card.className="mission";
-
-        if(completed){
-          card.classList.add("completed");
-        }
-
-        if(locked){
-          card.classList.add("locked");
-        }
-
-        card.innerHTML=`
-
-          <div class="mission-number">
-            MISSION ${String(index+1).padStart(2,"0")}
           </div>
 
-          <div class="mission-title">
-            ${escapeHTML(mission.title)}
+          <div class="world-achievement">
+
+            <div class="achievement-label">
+              ACHIEVEMENT
+            </div>
+
+            <div class="achievement-name">
+              ${month.achievement}
+            </div>
+
           </div>
 
-          <div class="mission-description">
-            ${escapeHTML(mission.description)}
+        </div>
+
+
+        <div class="section-label">
+          MAIN MISSIONS
+        </div>
+
+
+        <div class="mission-grid">
+          ${missionsHTML}
+        </div>
+
+
+        <div class="extra-sections">
+
+          <div class="extra-box">
+
+            <h3>
+              SIDE QUESTS
+            </h3>
+
+            ${sideHTML}
+
           </div>
 
-          <div class="mission-footer">
 
-            <span>
-              ${mission.xp} XP
-            </span>
+          <div class="extra-box">
 
-            <div class="proof-tags">
+            <h3>
+              CLASSIFIED
+            </h3>
+
+            <p>
+              Not everything in this world is visible yet.
+              Keep playing.
+            </p>
+
+            <div class="discovery ${
+              discoveryCount > 0 ? "" : "locked"
+            }">
 
               ${
-                proof.note
-                ?
-                `<span class="proof-tag">NOTE</span>`
-                :
-                ""
-              }
-
-              ${
-                proof.image
-                ?
-                `<span class="proof-tag">IMAGE</span>`
-                :
-                ""
+                discoveryCount > 0
+                  ? discoveryCount + " DISCOVERY FOUND"
+                  : "??? // DISCOVERY LOCKED"
               }
 
             </div>
 
           </div>
-        `;
 
-        card.onclick=()=>{
+        </div>
 
-          if(locked){
+      </div>
 
-            showToast(
-              "COMPLETE THE PREVIOUS MISSION FIRST"
-            );
+    </section>
 
-            return;
-          }
-
-          openMission(month,index);
-
-        };
-
-        container.appendChild(card);
-
-      }
-    );
-
-    updateMonthProgress(month);
-
-  });
-
-}
-
-
-function renderAll(){
-
-  createMonthNav();
-
-  renderAllMissions();
-
-  updateXP();
-
-  updateMonthLocks();
-
-}
-
-
-/* =========================================================
-   MONTH PROGRESS
-========================================================= */
-
-function updateMonthProgress(month){
-
-  const completed =
-    getCompletedCount(month);
-
-  const progress =
-    document.getElementById(
-      "progress-"+month
-    );
-
-  const fill =
-    document.getElementById(
-      "fill-"+month
-    );
-
-  if(progress){
-    progress.textContent =
-      completed+" / 4";
-  }
-
-  if(fill){
-    fill.style.width =
-      (completed/4*100)+"%";
-  }
-
-}
-
-
-function updateMonthLocks(){
-
-  document.querySelectorAll(".month-btn")
-    .forEach(button=>{
-
-      const month =
-        button.dataset.month;
-
-      button.classList.toggle(
-        "locked",
-        isMonthLocked(month)
-      );
-
-    });
+  `;
 
 }
 
@@ -2604,61 +2074,46 @@ function updateMonthLocks(){
    OPEN MISSION
 ========================================================= */
 
-function openMission(month,index){
+function openMission(monthIndex,missionIndex){
+
+  const month =
+    months[monthIndex];
 
   const mission =
-    months[month].missions[index];
+    month.missions[missionIndex];
 
   const key =
-    missionKey(month,index);
+    month.id + "-" + missionIndex;
 
-  currentMission={
-    month,
-    index,
-    key,
-    mission
+  currentMission = {
+    month:month,
+    mission:mission,
+    index:missionIndex,
+    key:key
   };
 
-  document.getElementById(
-    "modalNumber"
-  ).textContent=
-    "MISSION "+
-    String(index+1).padStart(2,"0");
 
-  document.getElementById(
-    "modalTitle"
-  ).textContent=
-    mission.title;
+  document.getElementById("modalNumber")
+    .textContent =
+      "MISSION " +
+      String(missionIndex+1).padStart(2,"0");
 
-  document.getElementById(
-    "modalDescription"
-  ).textContent=
-    mission.description+
-    "  •  "+
-    mission.xp+
-    " XP";
+
+  document.getElementById("modalTitle")
+    .textContent =
+      mission.title;
+
+
+  document.getElementById("modalDesc")
+    .textContent =
+      mission.desc;
+
 
   loadMissionProof(key);
 
-  document.getElementById(
-    "missionModal"
-  ).classList.add("show");
 
-}
-
-
-/* =========================================================
-   CLOSE MODAL
-========================================================= */
-
-function closeModal(){
-
-  document.getElementById(
-    "missionModal"
-  ).classList.remove("show");
-
-  currentMission=null;
-
+  document.getElementById("missionModal")
+    .classList.add("open");
 }
 
 
@@ -2671,40 +2126,73 @@ function loadMissionProof(key){
   const proof =
     state.proofs[key] || {};
 
+
   const note =
-    document.getElementById(
-      "missionNote"
-    );
+    document.getElementById("missionNote");
 
   const preview =
-    document.getElementById(
-      "imagePreview"
-    );
+    document.getElementById("imagePreview");
 
-  const previewImage =
-    document.getElementById(
-      "previewImage"
-    );
+  const placeholder =
+    document.getElementById("uploadPlaceholder");
+
+  const status =
+    document.getElementById("proofStatus");
+
+  const completeButton =
+    document.getElementById("completeButton");
+
 
   note.value =
     proof.note || "";
 
+
   if(proof.image){
 
-    previewImage.src =
+    preview.src =
       proof.image;
 
-    preview.classList.add("show");
+    preview.style.display =
+      "block";
+
+    placeholder.style.display =
+      "none";
+
+    status.textContent =
+      "IMAGE UPLOADED // MISSION READY";
+
+    status.classList.add("ready");
+
+    completeButton.disabled =
+      false;
+
+    completeButton.textContent =
+      "MARK AS DONE +" +
+      currentMission.mission.xp +
+      " XP";
 
   }else{
 
-    previewImage.removeAttribute("src");
+    preview.removeAttribute("src");
 
-    preview.classList.remove("show");
+    preview.style.display =
+      "none";
+
+    placeholder.style.display =
+      "block";
+
+    status.textContent =
+      "NO IMAGE UPLOADED";
+
+    status.classList.remove("ready");
+
+    completeButton.disabled =
+      true;
+
+    completeButton.textContent =
+      "UPLOAD IMAGE TO UNLOCK";
 
   }
-
-  updateProofStatus();
 
 }
 
@@ -2715,41 +2203,23 @@ function loadMissionProof(key){
 
 function saveMissionNote(){
 
-  if(!currentMission){
-    return;
-  }
+  if(!currentMission) return;
 
   const key =
     currentMission.key;
 
-  const note =
-    document.getElementById(
-      "missionNote"
-    ).value.trim();
-
   if(!state.proofs[key]){
-    state.proofs[key]={};
+    state.proofs[key] = {};
   }
 
-  state.proofs[key].note=note;
+  state.proofs[key].note =
+    document.getElementById("missionNote").value;
+
 
   localStorage.setItem(
     "level20_proofs",
     JSON.stringify(state.proofs)
   );
-
-  updateProofStatus();
-
-  renderAllMissions();
-
-  showToast(
-    note
-    ?
-    "NOTE SAVED"
-    :
-    "NOTE REMOVED"
-  );
-
 }
 
 
@@ -2759,62 +2229,58 @@ function saveMissionNote(){
 
 function saveMissionImage(event){
 
-  if(!currentMission){
-    return;
-  }
+  if(!currentMission) return;
 
   const file =
     event.target.files[0];
 
-  if(!file){
-    return;
-  }
+  if(!file) return;
+
 
   if(!file.type.startsWith("image/")){
 
-    showToast("PLEASE CHOOSE AN IMAGE");
+    showToast("PLEASE UPLOAD AN IMAGE");
 
     return;
   }
 
-  const reader =
-    new FileReader();
 
-  reader.onload=function(){
+  compressImage(file,1200,.75)
+    .then(dataUrl=>{
 
-    compressImage(
-      reader.result,
-      function(compressed){
+      const key =
+        currentMission.key;
 
-        const key =
-          currentMission.key;
-
-        if(!state.proofs[key]){
-          state.proofs[key]={};
-        }
-
-        state.proofs[key].image =
-          compressed;
-
-        localStorage.setItem(
-          "level20_proofs",
-          JSON.stringify(state.proofs)
-        );
-
-        loadMissionProof(key);
-
-        renderAllMissions();
-
-        showToast("IMAGE SAVED");
-
+      if(!state.proofs[key]){
+        state.proofs[key] = {};
       }
-    );
 
-  };
+      state.proofs[key].image =
+        dataUrl;
 
-  reader.readAsDataURL(file);
 
-  event.target.value="";
+      localStorage.setItem(
+        "level20_proofs",
+        JSON.stringify(state.proofs)
+      );
+
+
+      loadMissionProof(key);
+
+      renderWorld();
+
+      showToast(
+        "IMAGE SAVED // MISSION PROOF READY"
+      );
+
+    })
+    .catch(()=>{
+
+      showToast(
+        "IMAGE COULD NOT BE SAVED"
+      );
+
+    });
 
 }
 
@@ -2823,117 +2289,85 @@ function saveMissionImage(event){
    IMAGE COMPRESSION
 ========================================================= */
 
-function compressImage(
-  dataUrl,
-  callback
-){
+function compressImage(file,maxWidth,quality){
 
-  const img =
-    new Image();
+  return new Promise((resolve,reject)=>{
 
-  img.onload=function(){
+    const reader =
+      new FileReader();
 
-    const maxSize=1200;
+    reader.onload = event => {
 
-    let width=img.width;
-    let height=img.height;
+      const img =
+        new Image();
 
-    if(width>maxSize || height>maxSize){
+      img.onload = ()=>{
 
-      if(width>height){
+        let width =
+          img.width;
 
-        height =
-          height*
-          (maxSize/width);
-
-        width=maxSize;
-
-      }else{
-
-        width =
-          width*
-          (maxSize/height);
-
-        height=maxSize;
-
-      }
-
-    }
-
-    const canvas =
-      document.createElement("canvas");
-
-    canvas.width=width;
-    canvas.height=height;
-
-    const ctx =
-      canvas.getContext("2d");
-
-    ctx.drawImage(
-      img,
-      0,
-      0,
-      width,
-      height
-    );
-
-    const compressed =
-      canvas.toDataURL(
-        "image/jpeg",
-        .75
-      );
-
-    callback(compressed);
-
-  };
-
-  img.src=dataUrl;
-
-}
+        let height =
+          img.height;
 
 
-/* =========================================================
-   PROOF STATUS
-========================================================= */
+        if(width > maxWidth){
 
-function updateProofStatus(){
+          height =
+            height * (maxWidth / width);
 
-  if(!currentMission){
-    return;
-  }
+          width =
+            maxWidth;
 
-  const key =
-    currentMission.key;
+        }
 
-  const proof =
-    state.proofs[key] || {};
 
-  const status =
-    document.getElementById(
-      "proofStatus"
-    );
+        const canvas =
+          document.createElement("canvas");
 
-  const things=[];
+        canvas.width =
+          width;
 
-  if(proof.note){
-    things.push("NOTE ATTACHED");
-  }
+        canvas.height =
+          height;
 
-  if(proof.image){
-    things.push("IMAGE ATTACHED");
-  }
 
-  if(things.length===0){
+        const ctx =
+          canvas.getContext("2d");
 
-    status.textContent=
-      "NO PROOF ATTACHED";
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          width,
+          height
+        );
 
-  }else{
 
-    status.textContent=
-      things.join("  //  ");
+        resolve(
+          canvas.toDataURL(
+            "image/jpeg",
+            quality
+          )
+        );
 
-  }
+      };
+
+
+      img.onerror =
+        reject;
+
+      img.src =
+        event.target.result;
+
+    };
+
+
+    reader.onerror =
+      reject;
+
+    reader.readAsDataURL(file);
+
+  });
 
 }
 
@@ -2944,16 +2378,32 @@ function updateProofStatus(){
 
 function completeCurrentMission(){
 
-  if(!currentMission){
-    return;
-  }
+  if(!currentMission) return;
+
 
   const key =
     currentMission.key;
 
-  if(
-    state.completed.includes(key)
-  ){
+  const proof =
+    state.proofs[key] || {};
+
+
+  /*
+    HARD RULE:
+    NO IMAGE = NO COMPLETION
+  */
+
+  if(!proof.image){
+
+    showToast(
+      "UPLOAD AN IMAGE TO COMPLETE THIS MISSION"
+    );
+
+    return;
+  }
+
+
+  if(state.completed.includes(key)){
 
     showToast(
       "MISSION ALREADY COMPLETED"
@@ -2964,10 +2414,12 @@ function completeCurrentMission(){
     return;
   }
 
+
   state.completed.push(key);
 
   state.xp +=
     currentMission.mission.xp;
+
 
   localStorage.setItem(
     "level20_completed",
@@ -2979,20 +2431,29 @@ function completeCurrentMission(){
     state.xp
   );
 
+
   flash();
 
+
   showToast(
-    "+"+
-    currentMission.mission.xp+
+    "+" +
+    currentMission.mission.xp +
     " XP // MISSION COMPLETE"
   );
 
-  renderAll();
+
+  const completedMonth =
+    currentMonth;
+
 
   closeModal();
 
+
+  renderAll();
+
+
   checkMonthUnlock(
-    currentMission.month
+    completedMonth
   );
 
 }
@@ -3002,33 +2463,23 @@ function completeCurrentMission(){
    MONTH UNLOCK
 ========================================================= */
 
-function checkMonthUnlock(month){
+function checkMonthUnlock(monthIndex){
 
-  if(
-    getCompletedCount(month)===4
-  ){
+  if(monthIndex >= months.length - 1){
+    return;
+  }
 
-    const keys =
-      Object.keys(months);
 
-    const index =
-      keys.indexOf(month);
+  if(isMonthUnlocked(monthIndex + 1)){
 
-    if(index<keys.length-1){
+    setTimeout(()=>{
 
-      const nextMonth =
-        keys[index+1];
+      showToast(
+        months[monthIndex+1].full +
+        " // WORLD UNLOCKED"
+      );
 
-      setTimeout(()=>{
-
-        showToast(
-          "NEW WORLD UNLOCKED // "+
-          months[nextMonth].name
-        );
-
-      },500);
-
-    }
+    },500);
 
   }
 
@@ -3036,21 +2487,21 @@ function checkMonthUnlock(month){
 
 
 /* =========================================================
-   XP
+   CLOSE MODAL
 ========================================================= */
 
-function updateXP(){
+function closeModal(){
 
-  document.getElementById(
-    "xpDisplay"
-  ).textContent=
-    state.xp;
+  document.getElementById("missionModal")
+    .classList.remove("open");
+
+  currentMission = null;
 
 }
 
 
 /* =========================================================
-   STATUS
+   STATS
 ========================================================= */
 
 function showStats(){
@@ -3058,14 +2509,17 @@ function showStats(){
   const completed =
     state.completed.length;
 
-  const total=48;
+  const total =
+    months.length * 4;
 
   const percent =
     Math.round(
-      completed/total*100
+      (completed / total) * 100
     );
 
+
   alert(
+
 `LEVEL 20 // STATUS
 
 SAMKIT
@@ -3083,3295 +2537,9 @@ ${state.discoveries.length}/12
 
 YEAR STATUS:
 ${
-  percent===100
-  ?
-  "LEVEL 20 COMPLETE"
-  :
-  "IN PROGRESS"
-}`
-  );
-
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(message){
-
-  const toast =
-    document.getElementById(
-      "toast"
-    );
-
-  toast.textContent=message;
-
-  toast.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer=setTimeout(()=>{
-
-    toast.classList.remove("show");
-
-  },2600);
-
-}
-
-
-/* =========================================================
-   FLASH
-========================================================= */
-
-function flash(){
-
-  const f =
-    document.getElementById(
-      "flash"
-    );
-
-  f.classList.remove("active");
-
-  void f.offsetWidth;
-
-  f.classList.add("active");
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHTML(value){
-
-  return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-/* =========================================================
-   KEYBOARD
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  function(event){
-
-    if(event.key==="Escape"){
-
-      closeModal();
-
-    }
-
-    if(
-      event.key==="Enter" &&
-      !document
-        .getElementById("intro")
-        .classList.contains("hidden") &&
-      document
-        .getElementById("intro")
-        .style.display!=="none"
-    ){
-
-      openBriefing();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   CLICK OUTSIDE MODAL
-========================================================= */
-
-document.getElementById(
-  "missionModal"
-).addEventListener(
-  "click",
-  function(event){
-
-    if(
-      event.target === this
-    ){
-
-      closeModal();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-updateXP();
-
-</script>
-
-</body>
-</html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>LEVEL 20 — Samkit</title>
-
-<meta name="theme-color" content="#090909">
-<meta name="description" content="Samkit's Level 20 — a year-long digital birthday experience.">
-
-<style>
-
-/* =========================================================
-   LEVEL 20 — SAMKIT
-   SINGLE FILE VERSION
-   ========================================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,500&display=swap');
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  background:#080808;
-  color:#f4f0e8;
-  font-family:Inter,Arial,sans-serif;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-button{
-  font:inherit;
-}
-
-button,
-.clickable{
-  -webkit-tap-highlight-color:transparent;
-}
-
-/* =========================================================
-   ATMOSPHERE
-   ========================================================= */
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:999;
-  opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
-}
-
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(255,255,255,.045),transparent 35%),
-    radial-gradient(circle at 100% 100%,rgba(120,90,50,.06),transparent 30%);
-  z-index:-1;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* =========================================================
-   INTRO
-   ========================================================= */
-
-#intro{
-  min-height:100vh;
-  width:100%;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 42%,rgba(255,255,255,.07),transparent 20%),
-    #070707;
-}
-
-.intro-grid{
-  position:absolute;
-  inset:0;
-  opacity:.12;
-  background-image:
-    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
-  background-size:80px 80px;
-  mask-image:linear-gradient(to bottom,transparent,#000 25%,#000 75%,transparent);
-}
-
-.intro-orbit{
-  position:absolute;
-  width:520px;
-  height:520px;
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:50%;
-  animation:orbit 24s linear infinite;
-}
-
-.intro-orbit::before{
-  content:"";
-  position:absolute;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#eee8dc;
-  top:22px;
-  left:50%;
-  box-shadow:0 0 25px rgba(255,255,255,.8);
-}
-
-.intro-content{
-  text-align:center;
-  position:relative;
-  z-index:2;
-  padding:30px;
-}
-
-.system-label{
-  font-family:"DM Mono",monospace;
-  font-size:10px;
-  letter-spacing:4px;
-  color:#777;
-  margin-bottom:28px;
-}
-
-.big-number{
-  font-size:clamp(150px,35vw,420px);
-  line-height:.72;
-  letter-spacing:-.09em;
-  font-weight:500;
-  background:linear-gradient(180deg,#fff,#777);
-  -webkit-background-clip:text;
-  color:transparent;
-  animation:numberBreath 4s ease-in-out infinite;
-}
-
-.level-title{
-  margin-top:48px;
-  font-family:"DM Mono",monospace;
-  font-size:clamp(13px,2vw,18px);
-  letter-spacing:9px;
-}
-
-.samkit-title{
-  margin-top:13px;
-  font-size:clamp(11px,1.4vw,15px);
-  letter-spacing:8px;
-  color:#858585;
-}
-
-.intro-sub{
-  margin-top:45px;
-  font-family:"DM Mono",monospace;
-  font-size:10px;
-  letter-spacing:2px;
-  color:#686868;
-}
-
-.enter-button{
-  margin-top:42px;
-  padding:16px 30px;
-  background:transparent;
-  color:#f5f1e8;
-  border:1px solid rgba(255,255,255,.28);
-  cursor:pointer;
-  letter-spacing:3px;
-  font-size:11px;
-  transition:.35s ease;
-  position:relative;
-  overflow:hidden;
-}
-
-.enter-button::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:#f4f0e8;
-  transform:translateY(100%);
-  transition:.35s ease;
-  z-index:-1;
-}
-
-.enter-button:hover{
-  color:#090909;
-  border-color:#f4f0e8;
-}
-
-.enter-button:hover::before{
-  transform:translateY(0);
-}
-
-.enter-hint{
-  margin-top:15px;
-  font-family:"DM Mono",monospace;
-  color:#444;
-  font-size:9px;
-  letter-spacing:1px;
-}
-
-/* =========================================================
-   BRIEFING
-   ========================================================= */
-
-#briefing{
-  min-height:100vh;
-  padding:60px 22px;
-  background:
-    radial-gradient(circle at 80% 10%,rgba(150,120,70,.08),transparent 30%),
-    #0a0a0a;
-}
-
-.briefing-inner{
-  width:min(850px,100%);
-  margin:auto;
-  padding-top:8vh;
-}
-
-.eyebrow{
-  font-family:"DM Mono",monospace;
-  font-size:10px;
-  letter-spacing:4px;
-  color:#777;
-  text-transform:uppercase;
-}
-
-.briefing-title{
-  font-size:clamp(45px,8vw,100px);
-  line-height:.9;
-  letter-spacing:-.06em;
-  margin-top:30px;
-  font-weight:500;
-}
-
-.briefing-title em{
-  font-family:"Playfair Display",serif;
-  font-weight:500;
-}
-
-.briefing-copy{
-  margin-top:38px;
-  max-width:610px;
-  color:#999;
-  font-size:15px;
-  line-height:1.9;
-}
-
-.briefing-rules{
-  margin-top:60px;
-  border-top:1px solid #252525;
-}
-
-.rule{
-  padding:24px 0;
-  border-bottom:1px solid #252525;
-  display:grid;
-  grid-template-columns:70px 1fr;
-  gap:20px;
-}
-
-.rule-number{
-  font-family:"DM Mono",monospace;
-  color:#555;
-  font-size:11px;
-}
-
-.rule strong{
-  font-weight:500;
-}
-
-.rule p{
-  color:#777;
-  margin-top:6px;
-  line-height:1.6;
-  font-size:13px;
-}
-
-.begin-year{
-  margin-top:55px;
-  border:0;
-  background:#eee8dc;
-  color:#090909;
-  padding:17px 28px;
-  letter-spacing:3px;
-  font-size:10px;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.begin-year:hover{
-  transform:translateY(-2px);
-  box-shadow:0 15px 35px rgba(255,255,255,.08);
-}
-
-/* =========================================================
-   APP
-   ========================================================= */
-
-#app{
-  min-height:100vh;
-  background:#0a0a0a;
-}
-
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:50;
-  backdrop-filter:blur(18px);
-  background:rgba(8,8,8,.78);
-  border-bottom:1px solid rgba(255,255,255,.07);
-  padding:15px 20px;
-}
-
-.topbar-inner{
-  max-width:1300px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-}
-
-.brand{
-  font-family:"DM Mono",monospace;
-  font-size:11px;
-  letter-spacing:3px;
-}
-
-.brand span{
-  color:#777;
-}
-
-.xp-box{
-  text-align:right;
-  font-family:"DM Mono",monospace;
-  font-size:10px;
-  color:#777;
-}
-
-.xp-number{
-  color:#f1ede4;
-  font-size:12px;
-}
-
-.xp-line{
-  width:100px;
-  height:2px;
-  background:#252525;
-  margin-top:5px;
-  overflow:hidden;
-}
-
-.xp-fill{
-  width:0%;
-  height:100%;
-  background:#e9e3d8;
-  transition:width .5s ease;
-}
-
-/* =========================================================
-   MONTH NAV
-   ========================================================= */
-
-.month-nav{
-  max-width:1300px;
-  margin:auto;
-  padding:18px 20px;
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  scrollbar-width:none;
-}
-
-.month-nav::-webkit-scrollbar{
-  display:none;
-}
-
-.month-btn{
-  flex:0 0 auto;
-  background:transparent;
-  color:#555;
-  border:1px solid #202020;
-  padding:9px 13px;
-  font-family:"DM Mono",monospace;
-  font-size:9px;
-  letter-spacing:1px;
-  cursor:pointer;
-  transition:.25s;
-}
-
-.month-btn:hover{
-  color:#ddd;
-  border-color:#444;
-}
-
-.month-btn.active{
-  background:#e9e3d8;
-  color:#090909;
-  border-color:#e9e3d8;
-}
-
-.month-btn.locked{
-  opacity:.28;
-  cursor:not-allowed;
-}
-
-/* =========================================================
-   WORLD
-   ========================================================= */
-
-.world{
-  display:none;
-  min-height:calc(100vh - 120px);
-}
-
-.world.active{
-  display:block;
-  animation:worldIn .7s ease both;
-}
-
-.world-hero{
-  min-height:55vh;
-  padding:80px 22px 65px;
-  position:relative;
-  overflow:hidden;
-  display:flex;
-  align-items:flex-end;
-}
-
-.world-hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 70% 35%,var(--glow),transparent 30%),
-    linear-gradient(180deg,transparent 40%,#0a0a0a 100%);
-  opacity:.8;
-}
-
-.world-number{
-  position:absolute;
-  right:4vw;
-  top:25px;
-  font-family:"DM Mono",monospace;
-  color:rgba(255,255,255,.08);
-  font-size:clamp(120px,25vw,340px);
-  line-height:1;
-  letter-spacing:-.1em;
-}
-
-.world-content{
-  position:relative;
-  z-index:2;
-  max-width:1300px;
-  width:100%;
-  margin:auto;
-}
-
-.world-kicker{
-  font-family:"DM Mono",monospace;
-  color:#777;
-  font-size:10px;
-  letter-spacing:4px;
-}
-
-.world-title{
-  font-size:clamp(55px,10vw,145px);
-  letter-spacing:-.07em;
-  line-height:.85;
-  margin-top:20px;
-  max-width:900px;
-  font-weight:500;
-}
-
-.world-subtitle{
-  margin-top:25px;
-  max-width:520px;
-  color:#888;
-  line-height:1.7;
-  font-size:13px;
-}
-
-.world-body{
-  max-width:1300px;
-  margin:auto;
-  padding:30px 22px 100px;
-}
-
-/* =========================================================
-   DIFFERENT WORLDS
-   ========================================================= */
-
-.world-october{
-  --glow:rgba(100,80,55,.24);
-}
-
-.world-november{
-  --glow:rgba(75,85,90,.18);
-  background:#090b0b;
-}
-
-.world-december{
-  --glow:rgba(140,125,95,.13);
-}
-
-.world-january{
-  --glow:rgba(80,105,120,.17);
-}
-
-.world-february{
-  --glow:rgba(110,70,95,.15);
-}
-
-.world-march{
-  --glow:rgba(70,105,90,.15);
-}
-
-.world-april{
-  --glow:rgba(125,95,55,.14);
-}
-
-.world-may{
-  --glow:rgba(130,110,70,.17);
-}
-
-.world-june{
-  --glow:rgba(110,75,120,.15);
-}
-
-.world-july{
-  --glow:rgba(85,100,110,.14);
-}
-
-.world-august{
-  --glow:rgba(110,55,55,.18);
-}
-
-.world-september{
-  --glow:rgba(130,115,75,.2);
-}
-
-/* =========================================================
-   SECTION HEAD
-   ========================================================= */
-
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  border-bottom:1px solid #242424;
-  padding-bottom:15px;
-  margin-top:15px;
-  margin-bottom:15px;
-}
-
-.section-head h2{
-  font-size:13px;
-  letter-spacing:2px;
-  font-weight:500;
-}
-
-.section-head span{
-  font-family:"DM Mono",monospace;
-  color:#555;
-  font-size:9px;
-}
-
-/* =========================================================
-   MISSION GRID
-   ========================================================= */
-
-.missions{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:1px;
-  background:#242424;
-  border:1px solid #242424;
-}
-
-.mission{
-  background:#0d0d0d;
-  min-height:230px;
-  padding:25px;
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.mission:hover{
-  background:#111;
-}
-
-.mission.locked{
-  cursor:not-allowed;
-  opacity:.42;
-}
-
-.mission.completed{
-  background:#10100e;
-}
-
-.mission.completed::after{
-  content:"✓";
-  position:absolute;
-  top:20px;
-  right:20px;
-  font-family:"DM Mono",monospace;
-  color:#b8b09f;
-}
-
-.mission-top{
-  display:flex;
-  justify-content:space-between;
-  gap:20px;
-}
-
-.mission-number{
-  font-family:"DM Mono",monospace;
-  color:#555;
-  font-size:10px;
-}
-
-.mission-status{
-  font-family:"DM Mono",monospace;
-  font-size:8px;
-  color:#555;
-  letter-spacing:1px;
-}
-
-.mission h3{
-  margin-top:30px;
-  font-size:22px;
-  letter-spacing:-.03em;
-  font-weight:500;
-}
-
-.mission p{
-  color:#777;
-  font-size:12px;
-  line-height:1.65;
-  margin-top:9px;
-}
-
-.mission-bottom{
-  margin-top:30px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.mission-type{
-  font-family:"DM Mono",monospace;
-  font-size:8px;
-  color:#555;
-  text-transform:uppercase;
-}
-
-.mission-xp{
-  font-family:"DM Mono",monospace;
-  color:#b9b0a0;
-  font-size:10px;
-}
-
-/* =========================================================
-   SIDE QUESTS
-   ========================================================= */
-
-.side-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.side{
-  border:1px solid #202020;
-  padding:20px;
-  min-height:120px;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.side:hover{
-  border-color:#444;
-  transform:translateY(-2px);
-}
-
-.side small{
-  color:#555;
-  font-family:"DM Mono",monospace;
-  font-size:8px;
-  letter-spacing:1px;
-}
-
-.side p{
-  margin-top:13px;
-  color:#999;
-  font-size:12px;
-  line-height:1.6;
-}
-
-/* =========================================================
-   DISCOVERY
-   ========================================================= */
-
-.discovery{
-  margin-top:50px;
-  border:1px solid #2a2926;
-  background:
-    linear-gradient(135deg,rgba(255,255,255,.025),transparent),
-    #0c0c0b;
-  padding:30px;
-  display:none;
-  position:relative;
-  overflow:hidden;
-}
-
-.discovery.show{
-  display:block;
-  animation:reveal .8s ease both;
-}
-
-.discovery::before{
-  content:"CLASSIFIED";
-  position:absolute;
-  right:-15px;
-  top:30px;
-  transform:rotate(90deg);
-  color:#24221e;
-  font-family:"DM Mono",monospace;
-  font-size:40px;
-  letter-spacing:5px;
-}
-
-.discovery-label{
-  font-family:"DM Mono",monospace;
-  color:#81755f;
-  font-size:9px;
-  letter-spacing:3px;
-}
-
-.discovery h3{
-  margin-top:16px;
-  font-size:27px;
-  font-weight:500;
-}
-
-.discovery p{
-  margin-top:12px;
-  max-width:600px;
-  color:#777;
-  font-size:13px;
-  line-height:1.7;
-}
-
-/* =========================================================
-   ACHIEVEMENT
-   ========================================================= */
-
-.achievement{
-  margin-top:35px;
-  border-top:1px solid #242424;
-  padding:22px 0;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.achievement-label{
-  font-family:"DM Mono",monospace;
-  font-size:9px;
-  color:#555;
-  letter-spacing:2px;
-}
-
-.achievement-name{
-  margin-top:6px;
-  font-size:16px;
-}
-
-.badge{
-  border:1px solid #38352f;
-  padding:10px 14px;
-  font-family:"DM Mono",monospace;
-  font-size:8px;
-  color:#81755f;
-}
-
-/* =========================================================
-   STATUS PANEL
-   ========================================================= */
-
-.status-button{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  z-index:40;
-  border:1px solid #292929;
-  background:rgba(10,10,10,.85);
-  color:#777;
-  padding:10px 13px;
-  font-family:"DM Mono",monospace;
-  font-size:8px;
-  letter-spacing:1px;
-  cursor:pointer;
-  backdrop-filter:blur(10px);
-}
-
-.status-button:hover{
-  color:#eee;
-  border-color:#555;
-}
-
-/* =========================================================
-   MODAL
-   ========================================================= */
-
-#modal{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:rgba(0,0,0,.78);
-  backdrop-filter:blur(15px);
-}
-
-#modal.show{
-  display:flex;
-}
-
-.modal-box{
-  width:min(620px,100%);
-  background:#101010;
-  border:1px solid #303030;
-  padding:35px;
-  animation:modalIn .4s ease both;
-}
-
-.modal-kicker{
-  font-family:"DM Mono",monospace;
-  color:#777;
-  font-size:9px;
-  letter-spacing:3px;
-}
-
-.modal-box h2{
-  font-size:38px;
-  letter-spacing:-.05em;
-  margin-top:15px;
-}
-
-.modal-box p{
-  color:#888;
-  font-size:13px;
-  line-height:1.8;
-  margin-top:15px;
-}
-
-.modal-actions{
-  margin-top:30px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.complete-btn{
-  background:#eee8dc;
-  color:#090909;
-  border:0;
-  padding:14px 20px;
-  cursor:pointer;
-  font-size:9px;
-  letter-spacing:2px;
-}
-
-.close-btn{
-  background:transparent;
-  color:#777;
-  border:1px solid #333;
-  padding:14px 20px;
-  cursor:pointer;
-  font-size:9px;
-  letter-spacing:2px;
-}
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-#toast{
-  position:fixed;
-  bottom:25px;
-  left:50%;
-  transform:translate(-50%,30px);
-  opacity:0;
-  z-index:200;
-  background:#eee8dc;
-  color:#090909;
-  padding:13px 20px;
-  font-family:"DM Mono",monospace;
-  font-size:9px;
-  letter-spacing:1px;
-  pointer-events:none;
-  transition:.35s ease;
-}
-
-#toast.show{
-  opacity:1;
-  transform:translate(-50%,0);
-}
-
-/* =========================================================
-   FLASH
-   ========================================================= */
-
-#flash{
-  position:fixed;
-  inset:0;
-  background:#fff;
-  opacity:0;
-  pointer-events:none;
-  z-index:300;
-}
-
-#flash.active{
-  animation:flash .5s ease;
-}
-
-/* =========================================================
-   ANIMATIONS
-   ========================================================= */
-
-@keyframes orbit{
-  to{transform:rotate(360deg)}
-}
-
-@keyframes numberBreath{
-  0%,100%{transform:scale(1);opacity:.92}
-  50%{transform:scale(1.015);opacity:1}
-}
-
-@keyframes worldIn{
-  from{
-    opacity:0;
-    transform:translateY(15px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-@keyframes reveal{
-  from{
-    opacity:0;
-    transform:translateY(20px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-@keyframes modalIn{
-  from{
-    opacity:0;
-    transform:scale(.96) translateY(15px);
-  }
-  to{
-    opacity:1;
-    transform:scale(1) translateY(0);
-  }
-}
-
-@keyframes flash{
-  0%{opacity:0}
-  30%{opacity:.85}
-  100%{opacity:0}
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media(max-width:700px){
-
-  .big-number{
-    font-size:52vw;
-  }
-
-  .intro-orbit{
-    width:300px;
-    height:300px;
-  }
-
-  .level-title{
-    letter-spacing:5px;
-  }
-
-  .samkit-title{
-    letter-spacing:5px;
-  }
-
-  .briefing-inner{
-    padding-top:5vh;
-  }
-
-  .briefing-title{
-    font-size:52px;
-  }
-
-  .rule{
-    grid-template-columns:45px 1fr;
-  }
-
-  .world-hero{
-    min-height:58vh;
-    padding-top:65px;
-  }
-
-  .world-title{
-    font-size:65px;
-  }
-
-  .missions{
-    grid-template-columns:1fr;
-  }
-
-  .side-grid{
-    grid-template-columns:1fr;
-  }
-
-  .mission{
-    min-height:210px;
-  }
-
-  .modal-box{
-    padding:25px;
-  }
-
-  .modal-box h2{
-    font-size:30px;
-  }
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- =====================================================
-     INTRO
-     ===================================================== -->
-
-<section id="intro">
-
-  <div class="intro-grid"></div>
-  <div class="intro-orbit"></div>
-
-  <div class="intro-content">
-
-    <div class="system-label">
-      SYSTEM // YEAR 20 // INITIALIZING
-    </div>
-
-    <div class="big-number">20</div>
-
-    <div class="level-title">
-      LEVEL 20
-    </div>
-
-    <div class="samkit-title">
-      SAMKIT
-    </div>
-
-    <div class="intro-sub">
-      YOUR 20TH YEAR STARTS HERE.
-    </div>
-
-    <button
-      class="enter-button"
-      id="enterButton"
-      type="button"
-      onclick="openBriefing()"
-    >
-      ENTER LEVEL 20
-    </button>
-
-    <div class="enter-hint">
-      CLICK TO BEGIN // PRESS ENTER
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     BRIEFING
-     ===================================================== -->
-
-<section id="briefing" class="hidden">
-
-  <div class="briefing-inner">
-
-    <div class="eyebrow">
-      PLAYER BRIEFING // 001
-    </div>
-
-    <h1 class="briefing-title">
-      Welcome,<br>
-      <em>Samku.</em>
-    </h1>
-
-    <p class="briefing-copy">
-      This is not a task list.
-      It is not a productivity challenge.
-      And it definitely isn't a normal birthday gift.
-      <br><br>
-      This is your twentieth year — turned into a world
-      you have to actually live through.
-      Twelve months. Missions. Side quests.
-      Unexpected events. Things you will discover later.
-      And a few things Mahek probably has no intention
-      of explaining to you.
-    </p>
-
-    <div class="briefing-rules">
-
-      <div class="rule">
-        <div class="rule-number">01</div>
-        <div>
-          <strong>THE YEAR IS THE GAME.</strong>
-          <p>
-            Every month opens a different world.
-            Don't expect everything to look the same.
-          </p>
-        </div>
-      </div>
-
-      <div class="rule">
-        <div class="rule-number">02</div>
-        <div>
-          <strong>NOT EVERYTHING IS VISIBLE.</strong>
-          <p>
-            Complete things. Explore things.
-            Some content only appears after you discover it.
-          </p>
-        </div>
-      </div>
-
-      <div class="rule">
-        <div class="rule-number">03</div>
-        <div>
-          <strong>XP MATTERS.</strong>
-          <p>
-            Missions earn XP. The more of the year you actually
-            experience, the further you progress.
-          </p>
-        </div>
-      </div>
-
-      <div class="rule">
-        <div class="rule-number">04</div>
-        <div>
-          <strong>MAHEK IS PROBABLY HIDING SOMETHING.</strong>
-          <p>
-            This information is provided without further comment.
-          </p>
-        </div>
-      </div>
-
-    </div>
-
-    <button
-      class="begin-year"
-      type="button"
-      onclick="startYear()"
-    >
-      BEGIN OCTOBER →
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     APP
-     ===================================================== -->
-
-<section id="app" class="hidden">
-
-  <header class="topbar">
-
-    <div class="topbar-inner">
-
-      <div class="brand">
-        LEVEL 20 <span>// SAMKIT</span>
-      </div>
-
-      <div class="xp-box">
-        <div>
-          XP <span class="xp-number" id="xpNumber">0</span>
-        </div>
-
-        <div class="xp-line">
-          <div class="xp-fill" id="xpFill"></div>
-        </div>
-      </div>
-
-    </div>
-
-  </header>
-
-
-  <!-- MONTH NAV -->
-
-  <nav class="month-nav" id="monthNav"></nav>
-
-
-  <!-- ===================================================
-       OCTOBER
-       =================================================== -->
-
-  <section
-    class="world world-october active"
-    id="world-october"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">01</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          OCTOBER // WORLD 01
-        </div>
-
-        <h1 class="world-title">
-          THE<br>START.
-        </h1>
-
-        <p class="world-subtitle">
-          The year begins where Samkit feels most like Samkit:
-          spice, games, ridiculous choices and one thing
-          he probably wasn't expecting.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>MAIN MISSIONS</h2>
-        <span>04 FILES</span>
-      </div>
-
-      <div class="missions" id="missions-october"></div>
-
-      <div class="discovery" id="discovery-october">
-        <div class="discovery-label">
-          SECRET FILE // OCT-01
-        </div>
-        <h3>YOU FOUND SOMETHING.</h3>
-        <p>
-          Most people would have stopped after the obvious
-          missions. You didn't. Keep going. There are things
-          in this year that are not going to announce themselves.
-        </p>
-      </div>
-
-      <div class="section-head" style="margin-top:60px;">
-        <h2>SIDE QUESTS</h2>
-        <span>OPTIONAL // +50 XP</span>
-      </div>
-
-      <div class="side-grid">
-        <div class="side" onclick="sideQuest(this)">
-          <small>SQ // 01</small>
-          <p>Find something completely unnecessary that you genuinely want.</p>
-        </div>
-
-        <div class="side" onclick="sideQuest(this)">
-          <small>SQ // 02</small>
-          <p>Make Mahek laugh without using your usual methods.</p>
-        </div>
-
-        <div class="side" onclick="sideQuest(this)">
-          <small>SQ // 03</small>
-          <p>Take a photo that looks like the cover of a movie about your life.</p>
-        </div>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">LEVEL 20 UNLOCKED</div>
-        </div>
-        <div class="badge">OCT // COMPLETE</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       NOVEMBER
-       =================================================== -->
-
-  <section
-    class="world world-november"
-    id="world-november"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">02</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          NOVEMBER // CLASSIFIED
-        </div>
-
-        <h1 class="world-title">
-          THE<br>FILES.
-        </h1>
-
-        <p class="world-subtitle">
-          Everything is suspicious. Especially the people
-          you call friends.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>CASE FILES</h2>
-        <span>04 FILES</span>
-      </div>
-
-      <div class="missions" id="missions-november"></div>
-
-      <div class="discovery" id="discovery-november">
-        <div class="discovery-label">
-          CLASSIFIED // FILE 02
-        </div>
-        <h3>THE CASE IS STILL OPEN.</h3>
-        <p>
-          There is no official explanation for what happens
-          inside this file. Your investigation continues.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">FIELD AGENT</div>
-        </div>
-        <div class="badge">NOV // CASE CLOSED</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       DECEMBER
-       =================================================== -->
-
-  <section
-    class="world world-december"
-    id="world-december"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">03</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          DECEMBER // THE DAILY EDITION
-        </div>
-
-        <h1 class="world-title">
-          FRONT<br>PAGE.
-        </h1>
-
-        <p class="world-subtitle">
-          Your month, except everything is breaking news.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>HEADLINES</h2>
-        <span>04 STORIES</span>
-      </div>
-
-      <div class="missions" id="missions-december"></div>
-
-      <div class="discovery" id="discovery-december">
-        <div class="discovery-label">
-          LATE EDITION
-        </div>
-        <h3>EXTRA! EXTRA!</h3>
-        <p>
-          The year is becoming a story. Keep collecting
-          moments worth remembering.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">FRONT PAGE</div>
-        </div>
-        <div class="badge">DEC // PUBLISHED</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       JANUARY
-       =================================================== -->
-
-  <section
-    class="world world-january"
-    id="world-january"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">04</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          JANUARY // SYSTEM UPDATE
-        </div>
-
-        <h1 class="world-title">
-          UPDATE<br>20.1
-        </h1>
-
-        <p class="world-subtitle">
-          New year. New systems. Same Samkit.
-          Mostly.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>SYSTEM UPDATES</h2>
-        <span>04 PATCHES</span>
-      </div>
-
-      <div class="missions" id="missions-january"></div>
-
-      <div class="discovery" id="discovery-january">
-        <div class="discovery-label">
-          SYSTEM // HIDDEN PATCH
-        </div>
-        <h3>BUG DISCOVERED.</h3>
-        <p>
-          Apparently you're allowed to improve without becoming
-          a completely different person.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">SYSTEM UPDATED</div>
-        </div>
-        <div class="badge">JAN // PATCHED</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       FEBRUARY
-       =================================================== -->
-
-  <section
-    class="world world-february"
-    id="world-february"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">05</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          FEBRUARY // CO-OP MODE
-        </div>
-
-        <h1 class="world-title">
-          TWO<br>PLAYERS.
-        </h1>
-
-        <p class="world-subtitle">
-          Some levels are more fun when someone else
-          is equally responsible for the chaos.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>CO-OP MISSIONS</h2>
-        <span>04 MISSIONS</span>
-      </div>
-
-      <div class="missions" id="missions-february"></div>
-
-      <div class="discovery" id="discovery-february">
-        <div class="discovery-label">
-          CO-OP // HIDDEN
-        </div>
-        <h3>PLAYER TWO DETECTED.</h3>
-        <p>
-          Some memories are worth more because of who
-          you experienced them with.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">CO-OP UNLOCKED</div>
-        </div>
-        <div class="badge">FEB // 2P</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       MARCH
-       =================================================== -->
-
-  <section
-    class="world world-march"
-    id="world-march"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">06</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          MARCH // DEPARTURE
-        </div>
-
-        <h1 class="world-title">
-          GO<br>SOMEWHERE.
-        </h1>
-
-        <p class="world-subtitle">
-          You don't need a plane ticket to become
-          an explorer.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>TRAVEL LOG</h2>
-        <span>04 DESTINATIONS</span>
-      </div>
-
-      <div class="missions" id="missions-march"></div>
-
-      <div class="discovery" id="discovery-march">
-        <div class="discovery-label">
-          TRAVEL FILE
-        </div>
-        <h3>LOCATION FOUND.</h3>
-        <p>
-          The point wasn't where you went.
-          It was that you went somewhere.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">EXPLORER</div>
-        </div>
-        <div class="badge">MAR // DEPARTED</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       APRIL
-       =================================================== -->
-
-  <section
-    class="world world-april"
-    id="world-april"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">07</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          APRIL // FIELD GUIDE
-        </div>
-
-        <h1 class="world-title">
-          SURVIVE<br>THE MONTH.
-        </h1>
-
-        <p class="world-subtitle">
-          A field guide for doing things you normally
-          wouldn't bother doing.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>FIELD MISSIONS</h2>
-        <span>04 ENTRIES</span>
-      </div>
-
-      <div class="missions" id="missions-april"></div>
-
-      <div class="discovery" id="discovery-april">
-        <div class="discovery-label">
-          FIELD NOTE
-        </div>
-        <h3>SURVIVAL SUCCESSFUL.</h3>
-        <p>
-          Turns out trying something new is occasionally
-          worth the inconvenience.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">SURVIVOR</div>
-        </div>
-        <div class="badge">APR // FIELD TESTED</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       MAY
-       =================================================== -->
-
-  <section
-    class="world world-may"
-    id="world-may"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">08</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          MAY // EXECUTIVE MODE
-        </div>
-
-        <h1 class="world-title">
-          CEO<br>MODE.
-        </h1>
-
-        <p class="world-subtitle">
-          No Master's degree required for this particular
-          board meeting.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>BOARDROOM</h2>
-        <span>04 DECISIONS</span>
-      </div>
-
-      <div class="missions" id="missions-may"></div>
-
-      <div class="discovery" id="discovery-may">
-        <div class="discovery-label">
-          EXECUTIVE FILE
-        </div>
-        <h3>BOARD APPROVED.</h3>
-        <p>
-          Good ideas don't always need a classroom.
-          Sometimes they need someone willing to start.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">CEO MODE</div>
-        </div>
-        <div class="badge">MAY // EXECUTIVE</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       JUNE
-       =================================================== -->
-
-  <section
-    class="world world-june"
-    id="world-june"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">09</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          JUNE // ARCADE
-        </div>
-
-        <h1 class="world-title">
-          CHAOS<br>MODE.
-        </h1>
-
-        <p class="world-subtitle">
-          No strategy. No logic. Probably no regrets.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>ARCADE RUN</h2>
-        <span>04 GAMES</span>
-      </div>
-
-      <div class="missions" id="missions-june"></div>
-
-      <div class="discovery" id="discovery-june">
-        <div class="discovery-label">
-          BONUS ROUND
-        </div>
-        <h3>CHAOS DETECTED.</h3>
-        <p>
-          There was never supposed to be a plan.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">CHAOS COORDINATOR</div>
-        </div>
-        <div class="badge">JUN // HIGH SCORE</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       JULY
-       =================================================== -->
-
-  <section
-    class="world world-july"
-    id="world-july"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">10</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          JULY // ARCHIVE
-        </div>
-
-        <h1 class="world-title">
-          BEFORE<br>YOU.
-        </h1>
-
-        <p class="world-subtitle">
-          Somewhere in the archive is the version of you
-          who thought twenty was ancient.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>CHILDHOOD ARCHIVE</h2>
-        <span>04 FILES</span>
-      </div>
-
-      <div class="missions" id="missions-july"></div>
-
-      <div class="discovery" id="discovery-july">
-        <div class="discovery-label">
-          ARCHIVE UNSEALED
-        </div>
-        <h3>10-YEAR-OLD SAMKIT FOUND.</h3>
-        <p>
-          He would probably have opinions about who you became.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">NOSTALGIA UNLOCKED</div>
-        </div>
-        <div class="badge">JUL // ARCHIVED</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       AUGUST
-       =================================================== -->
-
-  <section
-    class="world world-august"
-    id="world-august"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">11</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          AUGUST // FINAL BOSS
-        </div>
-
-        <h1 class="world-title">
-          BOSS<br>BATTLE.
-        </h1>
-
-        <p class="world-subtitle">
-          The level where avoiding things stops working.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>BOSS MISSIONS</h2>
-        <span>04 CHALLENGES</span>
-      </div>
-
-      <div class="missions" id="missions-august"></div>
-
-      <div class="discovery" id="discovery-august">
-        <div class="discovery-label">
-          BOSS PHASE // 02
-        </div>
-        <h3>YOU FOUND THE HARD PART.</h3>
-        <p>
-          The hardest missions are usually the ones
-          nobody else can complete for you.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">ACHIEVEMENT</div>
-          <div class="achievement-name">BOSS DEFEATED</div>
-        </div>
-        <div class="badge">AUG // VICTORY</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ===================================================
-       SEPTEMBER
-       =================================================== -->
-
-  <section
-    class="world world-september"
-    id="world-september"
-  >
-
-    <div class="world-hero">
-
-      <div class="world-number">12</div>
-
-      <div class="world-content">
-
-        <div class="world-kicker">
-          SEPTEMBER // FINAL ARCHIVE
-        </div>
-
-        <h1 class="world-title">
-          THE<br>END?
-        </h1>
-
-        <p class="world-subtitle">
-          Twelve months later, the question is no longer
-          what you completed. It's what you remember.
-        </p>
-
-      </div>
-
-    </div>
-
-    <div class="world-body">
-
-      <div class="section-head">
-        <h2>FINAL ARCHIVE</h2>
-        <span>04 FILES</span>
-      </div>
-
-      <div class="missions" id="missions-september"></div>
-
-      <div class="discovery" id="discovery-september">
-        <div class="discovery-label">
-          FINAL FILE
-        </div>
-        <h3>YEAR 20 COMPLETE.</h3>
-        <p>
-          If you made it here, you didn't just complete
-          a birthday gift. You collected a year.
-        </p>
-      </div>
-
-      <div class="achievement">
-        <div>
-          <div class="achievement-label">FINAL ACHIEVEMENT</div>
-          <div class="achievement-name">LEVEL 20 COMPLETE</div>
-        </div>
-        <div class="badge">SEP // 100%</div>
-      </div>
-
-    </div>
-
-  </section>
-
-</section>
-
-
-<!-- =====================================================
-     STATUS
-     ===================================================== -->
-
-<button
-  class="status-button"
-  type="button"
-  onclick="showStats()"
->
-  STATUS
-</button>
-
-
-<!-- =====================================================
-     MODAL
-     ===================================================== -->
-
-<div id="modal">
-
-  <div class="modal-box">
-
-    <div class="modal-kicker" id="modalKicker">
-      MISSION
-    </div>
-
-    <h2 id="modalTitle">
-      Mission
-    </h2>
-
-    <p id="modalDescription">
-      Description
-    </p>
-
-    <div class="modal-actions">
-
-      <button
-        class="complete-btn"
-        id="modalComplete"
-        type="button"
-        onclick="completeCurrentMission()"
-      >
-        MARK COMPLETE
-      </button>
-
-      <button
-        class="close-btn"
-        type="button"
-        onclick="closeModal()"
-      >
-        CLOSE
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =====================================================
-     TOAST + FLASH
-     ===================================================== -->
-
-<div id="toast"></div>
-<div id="flash"></div>
-
-
-<!-- =====================================================
-     JAVASCRIPT
-     ===================================================== -->
-
-<script>
-
-/* =========================================================
-   DATA
-   ========================================================= */
-
-const months = [
-
-  {
-    id:"october",
-    short:"OCT",
-    title:"OCTOBER",
-    missions:[
-      {
-        title:"THE SPICE TEST",
-        description:"Eat something properly spicy. Capture the aftermath.",
-        type:"PHOTO",
-        xp:100
-      },
-      {
-        title:"VALORANT IRL",
-        description:"Explain one Valorant concept to Mahek without using gaming jargon.",
-        type:"VIDEO",
-        xp:200
-      },
-      {
-        title:"ROYAL ENFIELD",
-        description:"Pick the Royal Enfield you would actually buy.",
-        type:"CHOICE",
-        xp:150
-      },
-      {
-        title:"APPRECIATION GLITCH",
-        description:"Do one unexpectedly sweet thing for Mahek without being asked.",
-        type:"MEMORY",
-        xp:500
-      }
-    ]
-  },
-
-  {
-    id:"november",
-    short:"NOV",
-    title:"NOVEMBER",
-    missions:[
-      {
-        title:"FRIEND GROUP FILE",
-        description:"Turn your friend group into a ridiculous crime case.",
-        type:"PHOTO",
-        xp:150
-      },
-      {
-        title:"SECOND-HAND INCIDENT",
-        description:"Find a second-hand thing you would genuinely consider owning.",
-        type:"PHOTO",
-        xp:150
-      },
-      {
-        title:"MEETHALI FILE",
-        description:"Give the documentary treatment. Explain the entire thing dramatically.",
-        type:"VIDEO",
-        xp:100
-      },
-      {
-        title:"YUKTA // CLASSIFIED",
-        description:"Create your official theory about the Yukta file.",
-        type:"CHOICE",
-        xp:250
-      }
-    ]
-  },
-
-  {
-    id:"december",
-    short:"DEC",
-    title:"DECEMBER",
-    missions:[
-      {
-        title:"HEADLINE",
-        description:"Write the headline you want next year to be true.",
-        type:"TEXT",
-        xp:150
-      },
-      {
-        title:"BREAKING NEWS",
-        description:"Capture one genuinely good thing from this month.",
-        type:"PHOTO",
-        xp:100
-      },
-      {
-        title:"WANTED: APPRECIATION",
-        description:"Do something thoughtful without expecting anything back.",
-        type:"MEMORY",
-        xp:250
-      },
-      {
-        title:"EDITORIAL",
-        description:"Write the funniest fake headline about your friend group.",
-        type:"TEXT",
-        xp:100
-      }
-    ]
-  },
-
-  {
-    id:"january",
-    short:"JAN",
-    title:"JANUARY",
-    missions:[
-      {
-        title:"BODY UPGRADE",
-        description:"Choose a realistic physical upgrade and actually begin.",
-        type:"PHOTO",
-        xp:150
-      },
-      {
-        title:"BRAIN UPGRADE",
-        description:"Learn one thing deeply enough to explain it properly.",
-        type:"VIDEO",
-        xp:200
-      },
-      {
-        title:"LIFE UPGRADE",
-        description:"Try something you have genuinely never done.",
-        type:"PHOTO",
-        xp:200
-      },
-      {
-        title:"BUG FIX",
-        description:"Fix one tiny habit that has been annoying you.",
-        type:"TEXT",
-        xp:150
-      }
-    ]
-  },
-
-  {
-    id:"february",
-    short:"FEB",
-    title:"FEBRUARY",
-    missions:[
-      {
-        title:"NO 'YOU DECIDE' DATE",
-        description:"Plan a date where neither person is allowed to say 'you decide'.",
-        type:"PHOTO",
-        xp:250
-      },
-      {
-        title:"JEALOUSY PATCH",
-        description:"Replace a teasing-jealousy moment with something that makes Mahek laugh.",
-        type:"VIDEO",
-        xp:200
-      },
-      {
-        title:"APPRECIATION REBOOT",
-        description:"Write three specific things you appreciate about Mahek.",
-        type:"TEXT",
-        xp:300
-      },
-      {
-        title:"CO-OP SIDE QUEST",
-        description:"Do something together that neither of you has done before.",
-        type:"MEMORY",
-        xp:300
-      }
-    ]
-  },
-
-  {
-    id:"march",
-    short:"MAR",
-    title:"MARCH",
-    missions:[
-      {
-        title:"MINI ESCAPE",
-        description:"Go somewhere neither of you has explored.",
-        type:"PHOTO",
-        xp:250
-      },
-      {
-        title:"TRAVEL FILE",
-        description:"Record the best food, weirdest thing and best moment.",
-        type:"PHOTO",
-        xp:150
-      },
-      {
-        title:"NO-PLAN HOUR",
-        description:"Spend one hour with absolutely no detailed plan.",
-        type:"VIDEO",
-        xp:200
-      },
-      {
-        title:"POSTCARD FROM NOWHERE",
-        description:"Write one sentence you want to remember from this month.",
-        type:"TEXT",
-        xp:100
-      }
-    ]
-  },
-
-  {
-    id:"april",
-    short:"APR",
-    title:"APRIL",
-    missions:[
-      {
-        title:"SUNLIGHT DLC",
-        description:"Spend a reasonable amount of time outside doing something you enjoy.",
-        type:"PHOTO",
-        xp:100
-      },
-      {
-        title:"NEW FOOD",
-        description:"Order something you would normally never choose.",
-        type:"PHOTO",
-        xp:150
-      },
-      {
-        title:"OFF-SCREEN",
-        description:"Spend an evening without your usual entertainment routine.",
-        type:"MEMORY",
-        xp:200
-      },
-      {
-        title:"SURVIVAL REPORT",
-        description:"Write about something you unexpectedly enjoyed.",
-        type:"TEXT",
-        xp:150
-      }
-    ]
-  },
-
-  {
-    id:"may",
-    short:"MAY",
-    title:"MAY",
-    missions:[
-      {
-        title:"₹10K PROBLEM",
-        description:"Build a tiny business idea that could start with ₹10,000.",
-        type:"TEXT",
-        xp:300
-      },
-      {
-        title:"PITCH IT",
-        description:"Give Mahek your 60-second pitch.",
-        type:"VIDEO",
-        xp:200
-      },
-      {
-        title:"NO DEGREE REQUIRED",
-        description:"Pick a skill you want to become excellent at without needing a Master's.",
-        type:"CHOICE",
-        xp:150
-      },
-      {
-        title:"BRAND DETECTOR",
-        description:"Find one branded thing you genuinely believe is worth the money.",
-        type:"PHOTO",
-        xp:100
-      }
-    ]
-  },
-
-  {
-    id:"june",
-    short:"JUN",
-    title:"JUNE",
-    missions:[
-      {
-        title:"WHEEL OF BAD IDEAS",
-        description:"Choose a random harmless challenge.",
-        type:"CHOICE",
-        xp:200
-      },
-      {
-        title:"DOUBLE OR NOTHING",
-        description:"Choose a previous-style challenge. Complete it for double XP.",
-        type:"VIDEO",
-        xp:400
-      },
-      {
-        title:"RANDOM FOOD",
-        description:"Order something unusual without overthinking it.",
-        type:"PHOTO",
-        xp:150
-      },
-      {
-        title:"CHAOS CALL",
-        description:"Call someone you have not spoken to in a while.",
-        type:"MEMORY",
-        xp:150
-      }
-    ]
-  },
-
-  {
-    id:"july",
-    short:"JUL",
-    title:"JULY",
-    missions:[
-      {
-        title:"THE 10-YEAR-OLD",
-        description:"Do something your younger self would have absolutely loved.",
-        type:"PHOTO",
-        xp:200
-      },
-      {
-        title:"OLD FAVOURITE",
-        description:"Bring back a childhood favourite.",
-        type:"PHOTO",
-        xp:100
-      },
-      {
-        title:"MESSAGE TO 10",
-        description:"Tell younger Samkit something about the person he became.",
-        type:"VIDEO",
-        xp:250
-      },
-      {
-        title:"COOL ENOUGH?",
-        description:"Would 10-year-old Samkit think current-you is cool?",
-        type:"TEXT",
-        xp:150
-      }
-    ]
-  },
-
-  {
-    id:"august",
-    short:"AUG",
-    title:"AUGUST",
-    missions:[
-      {
-        title:"THE HARD ONE",
-        description:"Do something you have been avoiding.",
-        type:"MEMORY",
-        xp:300
-      },
-      {
-        title:"THE PERSONAL ONE",
-        description:"Have a conversation you have been postponing.",
-        type:"MEMORY",
-        xp:300
-      },
-      {
-        title:"THE ADVENTURE ONE",
-        description:"Plan one memorable but inexpensive day.",
-        type:"PHOTO",
-        xp:300
-      },
-      {
-        title:"SECRET BOSS",
-        description:"Do something thoughtful secretly.",
-        type:"MEMORY",
-        xp:500
-      }
-    ]
-  },
-
-  {
-    id:"september",
-    short:"SEP",
-    title:"SEPTEMBER",
-    missions:[
-      {
-        title:"YEAR IN 5 FRAMES",
-        description:"Tell the story of this entire year using five photos.",
-        type:"PHOTO ×5",
-        xp:250
-      },
-      {
-        title:"BEST FAILURE",
-        description:"Write about something that went wrong but taught you something.",
-        type:"TEXT",
-        xp:200
-      },
-      {
-        title:"THE NEXT LEVEL",
-        description:"Tell 21-year-old Samkit what he should remember.",
-        type:"VIDEO",
-        xp:250
-      },
-      {
-        title:"FINAL CO-OP",
-        description:"Make one last memory with Mahek.",
-        type:"MEMORY",
-        xp:500
-      }
-    ]
-  }
-
-];
-
-
-/* =========================================================
-   STATE
-   ========================================================= */
-
-let state = {
-  xp: Number(localStorage.getItem("level20_xp") || 0),
-  completed: JSON.parse(
-    localStorage.getItem("level20_completed") || "[]"
-  ),
-  discoveries: JSON.parse(
-    localStorage.getItem("level20_discoveries") || "[]"
-  ),
-  secret: Number(
-    localStorage.getItem("level20_secret") || 0
-  )
-};
-
-let currentMission = null;
-
-
-/* =========================================================
-   INTRO
-   ========================================================= */
-
-function openBriefing(){
-
-  const intro = document.getElementById("intro");
-  const briefing = document.getElementById("briefing");
-
-  if(!intro || !briefing){
-    alert("LEVEL 20 could not initialize.");
-    return;
-  }
-
-  intro.style.display = "none";
-  briefing.classList.remove("hidden");
-
-  window.scrollTo({
-    top:0,
-    behavior:"instant"
-  });
-}
-
-
-/* =========================================================
-   START YEAR
-   ========================================================= */
-
-function startYear(){
-
-  const briefing = document.getElementById("briefing");
-  const app = document.getElementById("app");
-
-  if(!briefing || !app){
-    alert("YEAR INITIALIZATION ERROR.");
-    return;
-  }
-
-  briefing.classList.add("hidden");
-  app.classList.remove("hidden");
-
-  renderMonthNav();
-  renderAllMissions();
-  updateXP();
-  showMonth("october");
-
-  window.scrollTo({
-    top:0,
-    behavior:"instant"
-  });
-
-  showToast("OCTOBER // LEVEL 20 INITIALIZED");
-}
-
-
-/* =========================================================
-   MONTH NAV
-   ========================================================= */
-
-function renderMonthNav(){
-
-  const nav = document.getElementById("monthNav");
-
-  nav.innerHTML = "";
-
-  months.forEach((month,index)=>{
-
-    const button = document.createElement("button");
-
-    button.className = "month-btn";
-
-    button.textContent = month.short;
-
-    button.type = "button";
-
-    const unlocked = index === 0 ||
-      isMonthUnlocked(index);
-
-    if(!unlocked){
-      button.classList.add("locked");
-      button.title = "Complete the previous month first.";
-    }
-
-    button.onclick = function(){
-
-      if(unlocked){
-
-        showMonth(month.id);
-
-      }else{
-
-        showToast(
-          "COMPLETE THE PREVIOUS WORLD FIRST."
-        );
-
-      }
-
-    };
-
-    nav.appendChild(button);
-
-  });
-
-}
-
-
-/* =========================================================
-   MONTH UNLOCK
-   ========================================================= */
-
-function isMonthUnlocked(index){
-
-  if(index === 0) return true;
-
-  const previous = months[index - 1];
-
-  return monthCompleted(previous.id);
-}
-
-
-/* =========================================================
-   MONTH COMPLETE
-   ========================================================= */
-
-function monthCompleted(monthId){
-
-  const missions = months.find(
-    m => m.id === monthId
-  ).missions;
-
-  return missions.every((mission,index)=>{
-
-    return state.completed.includes(
-      monthId + "-" + index
-    );
-
-  });
-
-}
-
-
-/* =========================================================
-   SHOW MONTH
-   ========================================================= */
-
-function showMonth(monthId){
-
-  const index = months.findIndex(
-    m => m.id === monthId
-  );
-
-  if(index < 0) return;
-
-  if(!isMonthUnlocked(index)){
-
-    showToast(
-      "THIS WORLD IS STILL LOCKED."
-    );
-
-    return;
-
-  }
-
-  document.querySelectorAll(".world")
-    .forEach(world=>{
-      world.classList.remove("active");
-    });
-
-  const selected =
-    document.getElementById(
-      "world-" + monthId
-    );
-
-  if(selected){
-    selected.classList.add("active");
-  }
-
-  document.querySelectorAll(".month-btn")
-    .forEach((button,i)=>{
-
-      button.classList.toggle(
-        "active",
-        i === index
-      );
-
-    });
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-}
-
-
-/* =========================================================
-   RENDER MISSIONS
-   ========================================================= */
-
-function renderAllMissions(){
-
-  months.forEach(month=>{
-
-    const container =
-      document.getElementById(
-        "missions-" + month.id
-      );
-
-    if(!container) return;
-
-    container.innerHTML = "";
-
-    month.missions.forEach(
-      (mission,index)=>{
-
-        const card =
-          document.createElement("div");
-
-        const key =
-          month.id + "-" + index;
-
-        const completed =
-          state.completed.includes(key);
-
-        const unlocked =
-          index === 0 ||
-          state.completed.includes(
-            month.id + "-" + (index - 1)
-          );
-
-        card.className = "mission";
-
-        if(completed){
-          card.classList.add("completed");
-        }
-
-        if(!unlocked){
-          card.classList.add("locked");
-        }
-
-        card.innerHTML = `
-
-          <div>
-
-            <div class="mission-top">
-
-              <div class="mission-number">
-                ${String(index+1).padStart(2,"0")}
-              </div>
-
-              <div class="mission-status">
-                ${
-                  completed
-                  ? "COMPLETE"
-                  : unlocked
-                  ? "AVAILABLE"
-                  : "LOCKED"
-                }
-              </div>
-
-            </div>
-
-            <h3>
-              ${mission.title}
-            </h3>
-
-            <p>
-              ${mission.description}
-            </p>
-
-          </div>
-
-          <div class="mission-bottom">
-
-            <div class="mission-type">
-              ${mission.type}
-            </div>
-
-            <div class="mission-xp">
-              +${mission.xp} XP
-            </div>
-
-          </div>
-
-        `;
-
-        card.onclick = function(){
-
-          if(completed){
-
-            showToast(
-              "MISSION ALREADY COMPLETED."
-            );
-
-            return;
-
-          }
-
-          if(!unlocked){
-
-            showToast(
-              "COMPLETE THE PREVIOUS MISSION FIRST."
-            );
-
-            return;
-
-          }
-
-          openMission(
-            month,
-            mission,
-            index
-          );
-
-        };
-
-        container.appendChild(card);
-
-      }
-    );
-
-    updateDiscovery(month.id);
-
-  });
-
-}
-
-
-/* =========================================================
-   OPEN MISSION
-   ========================================================= */
-
-function openMission(
-  month,
-  mission,
-  index
-){
-
-  currentMission = {
-    month:month,
-    mission:mission,
-    index:index
-  };
-
-  document.getElementById(
-    "modalKicker"
-  ).textContent =
-    month.short +
-    " // MISSION " +
-    String(index+1).padStart(2,"0");
-
-  document.getElementById(
-    "modalTitle"
-  ).textContent =
-    mission.title;
-
-  document.getElementById(
-    "modalDescription"
-  ).textContent =
-    mission.description +
-    "  Complete it in real life, then mark the mission complete.";
-
-  document.getElementById(
-    "modalComplete"
-  ).textContent =
-    "MARK COMPLETE  +" +
-    mission.xp +
-    " XP";
-
-  document.getElementById(
-    "modal"
-  ).classList.add("show");
-
-}
-
-
-/* =========================================================
-   COMPLETE MISSION
-   ========================================================= */
-
-function completeCurrentMission(){
-
-  if(!currentMission) return;
-
-  const month =
-    currentMission.month;
-
-  const mission =
-    currentMission.mission;
-
-  const index =
-    currentMission.index;
-
-  const key =
-    month.id + "-" + index;
-
-  if(state.completed.includes(key)){
-
-    closeModal();
-    return;
-
-  }
-
-  state.completed.push(key);
-
-  state.xp += mission.xp;
-
-  localStorage.setItem(
-    "level20_completed",
-    JSON.stringify(state.completed)
-  );
-
-  localStorage.setItem(
-    "level20_xp",
-    state.xp
-  );
-
-  closeModal();
-
-  flash();
-
-  renderAllMissions();
-  updateXP();
-  renderMonthNav();
-
-  showToast(
-    "MISSION COMPLETE // +" +
-    mission.xp +
-    " XP"
-  );
-
-  checkDiscovery(month.id);
-
-  if(monthCompleted(month.id)){
-
-    setTimeout(()=>{
-
-      showToast(
-        month.short +
-        " COMPLETE // NEW WORLD UNLOCKED"
-      );
-
-      renderMonthNav();
-
-    },1500);
-
-  }
-
-}
-
-
-/* =========================================================
-   DISCOVERY
-   ========================================================= */
-
-function checkDiscovery(monthId){
-
-  const count =
-    state.completed.filter(
-      key => key.startsWith(monthId + "-")
-    ).length;
-
-  if(count >= 2 &&
-     !state.discoveries.includes(monthId)){
-
-    state.discoveries.push(monthId);
-
-    localStorage.setItem(
-      "level20_discoveries",
-      JSON.stringify(state.discoveries)
-    );
-
-    updateDiscovery(monthId);
-
-    setTimeout(()=>{
-
-      showToast(
-        "SECRET FILE DISCOVERED."
-      );
-
-    },700);
-
-  }
-
-}
-
-
-function updateDiscovery(monthId){
-
-  const element =
-    document.getElementById(
-      "discovery-" + monthId
-    );
-
-  if(!element) return;
-
-  if(state.discoveries.includes(monthId)){
-
-    element.classList.add("show");
-
-  }else{
-
-    element.classList.remove("show");
-
-  }
-
-}
-
-
-/* =========================================================
-   XP
-   ========================================================= */
-
-function updateXP(){
-
-  const xp =
-    document.getElementById("xpNumber");
-
-  const fill =
-    document.getElementById("xpFill");
-
-  if(!xp || !fill) return;
-
-  xp.textContent = state.xp;
-
-  const maxXP = 10000;
-
-  const percentage =
-    Math.min(
-      (state.xp / maxXP) * 100,
-      100
-    );
-
-  fill.style.width =
-    percentage + "%";
-
-}
-
-
-/* =========================================================
-   SIDE QUEST
-   ========================================================= */
-
-function sideQuest(element){
-
-  if(element.dataset.done === "true"){
-
-    showToast(
-      "SIDE QUEST ALREADY COMPLETE."
-    );
-
-    return;
-
-  }
-
-  element.dataset.done = "true";
-
-  element.style.opacity = ".4";
-
-  state.xp += 50;
-
-  localStorage.setItem(
-    "level20_xp",
-    state.xp
-  );
-
-  updateXP();
-
-  showToast(
-    "SIDE QUEST COMPLETE // +50 XP"
-  );
-
-}
-
-
-/* =========================================================
-   MODAL
-   ========================================================= */
-
-function closeModal(){
-
-  document
-    .getElementById("modal")
-    .classList.remove("show");
-
-  currentMission = null;
-
-}
-
-
-/* =========================================================
-   STATUS
-   ========================================================= */
-
-function showStats(){
-
-  const completed =
-    state.completed.length;
-
-  const percent =
-    Math.round(
-      (completed / 48) * 100
-    );
-
-  alert(
-
-`LEVEL 20 // STATUS
-
-SAMKIT
-
-XP: ${state.xp}
-
-MISSIONS:
-${completed}/48
-
-PROGRESS:
-${percent}%
-
-SECRET FILES:
-${state.discoveries.length}/12
-
-YEAR STATUS:
-${
   percent === 100
-  ? "LEVEL 20 COMPLETE"
-  : "IN PROGRESS"
+    ? "LEVEL 20 COMPLETE"
+    : "IN PROGRESS"
 }`
 
   );
@@ -6380,45 +2548,112 @@ ${
 
 
 /* =========================================================
+   SECRET EASTER EGG
+========================================================= */
+
+function secretClick(){
+
+  state.secret++;
+
+  localStorage.setItem(
+    "level20_secret",
+    state.secret
+  );
+
+
+  if(state.secret === 1){
+
+    showToast(
+      "YOU FOUND THE THING THAT WASN'T THERE"
+    );
+
+  }
+
+  else if(state.secret === 3){
+
+    showToast(
+      "WHY ARE YOU CLICKING THIS"
+    );
+
+  }
+
+  else if(state.secret === 5){
+
+    showToast(
+      "OKAY SAMKU. YOU WIN."
+    );
+
+  }
+
+  else if(state.secret === 7){
+
+    flash();
+
+    showToast(
+      "SECRET LEVEL // MAHEK KNOWS"
+    );
+
+  }
+
+  else{
+
+    showToast("...");
+
+  }
+
+}
+
+
+/* =========================================================
    TOAST
-   ========================================================= */
+========================================================= */
 
 let toastTimer;
+
 
 function showToast(message){
 
   const toast =
     document.getElementById("toast");
 
+
   toast.textContent =
     message;
 
+
   toast.classList.add("show");
 
-  clearTimeout(toastTimer);
+
+  clearTimeout(
+    toastTimer
+  );
+
 
   toastTimer =
     setTimeout(()=>{
 
       toast.classList.remove("show");
 
-    },2600);
+    },2800);
 
 }
 
 
 /* =========================================================
    FLASH
-   ========================================================= */
+========================================================= */
 
 function flash(){
 
   const f =
     document.getElementById("flash");
 
+
   f.classList.remove("active");
 
+
   void f.offsetWidth;
+
 
   f.classList.add("active");
 
@@ -6427,7 +2662,7 @@ function flash(){
 
 /* =========================================================
    KEYBOARD
-   ========================================================= */
+========================================================= */
 
 document.addEventListener(
   "keydown",
@@ -6441,12 +2676,7 @@ document.addEventListener(
 
     if(
       event.key === "Enter" &&
-      !document
-        .getElementById("intro")
-        .classList.contains("hidden") &&
-      document
-        .getElementById("briefing")
-        .classList.contains("hidden")
+      document.getElementById("intro").style.display !== "none"
     ){
 
       openBriefing();
@@ -6458,84 +2688,34 @@ document.addEventListener(
 
 
 /* =========================================================
-   CLICK OUTSIDE MODAL
-   ========================================================= */
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
 
-document
-  .getElementById("modal")
-  .addEventListener(
-    "click",
-    function(event){
+document.getElementById("missionModal")
+  .addEventListener("click",function(event){
 
-      if(event.target === this){
+    if(event.target === this){
 
-        closeModal();
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   ESCAPE EASTER EGG
-   ========================================================= */
-
-document.addEventListener(
-  "keydown",
-  function(event){
-
-    if(event.key.toLowerCase() === "m"){
-
-      state.secret++;
-
-      localStorage.setItem(
-        "level20_secret",
-        state.secret
-      );
-
-      if(state.secret === 1){
-
-        showToast(
-          "YOU FOUND THE THING THAT WASN'T THERE."
-        );
-
-      }else if(state.secret === 3){
-
-        showToast(
-          "WHY ARE YOU PRESSING RANDOM KEYS?"
-        );
-
-      }else if(state.secret === 5){
-
-        showToast(
-          "OKAY SAMKU. YOU WIN."
-        );
-
-      }else{
-
-        showToast("...");
-
-      }
+      closeModal();
 
     }
 
-  }
-);
+  });
 
 
 /* =========================================================
-   INITIALIZATION
-   ========================================================= */
+   SECRET CLICK AREA
+========================================================= */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function(){
+document.querySelector(".logo")
+  .addEventListener("click",secretClick);
 
-    updateXP();
 
-  }
-);
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateXP();
 
 </script>
 
